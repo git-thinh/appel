@@ -35,10 +35,9 @@ namespace appel
 
         #endregion
 
-        #region [ VARIABLE: CONTROLS UI ]
-        // header
-        Panel ui_toolbar_Header = new Panel() { Dock = DockStyle.Top, Height = 32, Visible = false };
-        Panel ui_toolbar_Footer = new Panel() { Dock = DockStyle.Bottom, Height = 32, Visible = false };
+        /*////////////////////////////////////////////////////////////////////////*/
+
+        #region [ UI LAYOUT ]
 
         Label ui_lbl_form_backgrounc_Init = new Label()
         {
@@ -46,47 +45,34 @@ namespace appel
             Dock = DockStyle.None,
             Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
             Location = new Point(0, 0),
-        };
+        }; 
 
-        void f_show_label_Background_Init()
-        {
-            this.Controls.Add(ui_lbl_form_backgrounc_Init);
-            ui_lbl_form_backgrounc_Init.Width = this.Width;
-            ui_lbl_form_backgrounc_Init.Height = this.Height;
-            ui_lbl_form_backgrounc_Init.BringToFront();
-        }
+        #region [ CONTRACTOR UI: HEADER ]
 
-        public void f_hide_label_Background(int timeOut_FadeIn = 100)
-        {
-            ui_tab_Left.Visible = true;
-            ui_tab_Right.Visible = true;
-            ui_tab_Center.Visible = true;
+        Panel ui_toolbar_Header = new Panel() { Dock = DockStyle.Top, Height = 32, Visible = false };
 
-            ui_toolbar_Header.Visible = true;
-            ui_toolbar_Footer.Visible = true;
+        IconButton ui_btn_app_left_ShowHide;
+        IconButton ui_btn_app_right_ShowHide;
 
-            ui_tag_listItems.Visible = true;
-            ui_speak_listItems.Visible = true;
+        IconButton ui_btn_app_Exit;
+        IconButton ui_btn_app_Max;
+        IconButton ui_btn_app_Min;
 
-            setTimeout.Delay(timeOut_FadeIn, () =>
-            {
-                ui_lbl_form_backgrounc_Init.crossThreadPerformSafely(() =>
-                {
-                    ui_lbl_form_backgrounc_Init.SendToBack();
-                });
-            });
+        IconButton ui_cat_btn_pathOpen;
+        IconButton ui_cat_btn_pathRemove;
+        IconButton ui_cat_btn_pathSetting;
 
+        Label ui_lbl_path_doc_current;
 
-        }
+        #endregion
 
+        #region [ CONTRACTOR UI: FOOTER ]
 
-        //FATabStrip ui_tab_Left;
-        //FATabStrip ui_tab_Center;
-        //FATabStrip ui_tab_Right;
+        Panel ui_toolbar_Footer = new Panel() { Dock = DockStyle.Bottom, Height = 32, Visible = false };
 
-        //Splitter ui_splitter_Left;
-        //Splitter ui_splitter_Right;
+        #endregion
 
+        #region [ CONTRACTOR UI: AREA LEFT ]
 
         Splitter ui_splitter_Left = new Splitter()
         {
@@ -96,14 +82,7 @@ namespace appel
             Margin = new Padding(0),
             Padding = new Padding(0)
         };
-        Splitter ui_splitter_Right = new Splitter()
-        {
-            Dock = DockStyle.Right,
-            MinExtra = 0,
-            MinSize = width_tab_Right,
-            Margin = new Padding(0),
-            Padding = new Padding(0)
-        };
+
 
         FATabStrip ui_tab_Left = new FATabStrip()
         {
@@ -116,70 +95,16 @@ namespace appel
             RightToLeft = RightToLeft.Yes,
             Visible = false,
         };
-        FATabStrip ui_tab_Center = new FATabStrip()
-        {
-            Dock = DockStyle.Fill,
-            Margin = new Padding(0),
-            AlwaysShowClose = false,
-            Visible = false,
-        };
 
         FATabStripItem ui_tab_Tag = new FATabStripItem() { Title = "Tag", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "Content", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Folder = new FATabStripItem() { Title = "Folder", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Search = new FATabStripItem() { Title = "Find", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_Help = new FATabStripItem() { Title = "Help", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_log_Tab = new FATabStripItem() { Title = "Log", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        
 
-        FATabStrip ui_tab_Right = new FATabStrip()
-        {
-            Dock = DockStyle.Right,
-            Width = width_tab_Right,
-            Tag = width_tab_Right,
-            Margin = new Padding(0),
-            AlwaysShowClose = false,
-            AlwaysShowMenuGlyph = false,
-            Visible = false,
-        };
-
-        FATabStripItem ui_tab_detail_Speak = new FATabStripItem() { Visible = false, Title = "Speak", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_detail_Word = new FATabStripItem() { Title = "Word", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_detail_Sentence = new FATabStripItem() { Title = "Sentence", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_detail_Grammar = new FATabStripItem() { Title = "Grammar", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_detail_Bookmark = new FATabStripItem() { Title = "Mark", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-
-        //static HScrollProperties hoz = new HScrollProperties() { Enabled = false };
-        FlowLayoutPanel ui_speak_listItems = new FlowLayoutPanel()
-        {
-            Visible = false,
-            AutoScroll = true,
-            Dock = DockStyle.Fill,
-            BackColor = Color.White,
-            FlowDirection = FlowDirection.RightToLeft,
-            WrapContents = true,
-            Padding = new Padding(0, 0, 17, 0),
-            RightToLeft = RightToLeft.No,
-            BorderStyle = BorderStyle.None,
-            Margin = new Padding(0), 
-        };
-
-        // log, help
-        //FATabStripItem ui_tab_Help;
-        //FATabStripItem ui_log_Tab;
-        TextBox ui_log_Text;
-        IconButton ui_log_btnClean;
-        IconButton ui_log_btnCopy;
-
-        // search
-        //FATabStripItem ui_tab_Search;
-
-        // CATEGORY: TAB, TREEVIEW, MENU ...
-        //FATabStripItem ui_tab_Category;
-        //NoHScrollTree ui_cat_treeView;
         TreeView ui_cat_treeView;
 
-        // Tag
-        //FATabStripItem ui_tab_Tag;
+
         FlowLayoutPanel ui_tag_listItems = new FlowLayoutPanel()
         {
             Visible = false,
@@ -218,25 +143,120 @@ namespace appel
             Margin = new Padding(0),
         };
 
+        #endregion
 
-        IconButton ui_btn_app_left_ShowHide;
-        IconButton ui_btn_app_right_ShowHide;
+        #region [ CONTRACTOR UI: AREA CENTER ]
 
-        IconButton ui_btn_app_Exit;
-        IconButton ui_btn_app_Max;
-        IconButton ui_btn_app_Min;
+        FATabStrip ui_tab_Center = new FATabStrip()
+        {
+            Dock = DockStyle.Fill,
+            Margin = new Padding(0),
+            AlwaysShowClose = false,
+            Visible = false,
+        };
+        FATabStripItem ui_tab_Help = new FATabStripItem() { Title = "Help", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_log_Tab = new FATabStripItem() { Title = "Log", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
 
-        IconButton ui_cat_btn_pathOpen;
-        IconButton ui_cat_btn_pathRemove;
-        IconButton ui_cat_btn_pathSetting;
-
-        Label ui_lbl_path_doc_current;
-
-
+        // log, help
+        TextBox ui_log_Text;
+        IconButton ui_log_btnClean;
+        IconButton ui_log_btnCopy;
 
         #endregion
 
+        #region [ CONTRACTOR UI: AREA RIGHT ]
+
+        Splitter ui_splitter_Right = new Splitter()
+        {
+            Dock = DockStyle.Right,
+            MinExtra = 0,
+            MinSize = width_tab_Right,
+            Margin = new Padding(0),
+            Padding = new Padding(0)
+        };
+
+        FATabStrip ui_tab_Right = new FATabStrip()
+        {
+            Dock = DockStyle.Right,
+            Width = width_tab_Right,
+            Tag = width_tab_Right,
+            Margin = new Padding(0),
+            AlwaysShowClose = false,
+            AlwaysShowMenuGlyph = false,
+            Visible = false,
+        };
+
+        FATabStripItem ui_tab_detail_Speak = new FATabStripItem() { Title = "Speak", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_detail_Word = new FATabStripItem() { Title = "Word", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_detail_Sentence = new FATabStripItem() { Title = "Sentence", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_detail_Grammar = new FATabStripItem() { Title = "Grammar", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_detail_Bookmark = new FATabStripItem() { Title = "Mark", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+
+        FlowLayoutPanel ui_speak_listItems = new FlowLayoutPanel()
+        {
+            Visible = false,
+            AutoScroll = true,
+            Dock = DockStyle.Fill,
+            BackColor = Color.White,
+            FlowDirection = FlowDirection.RightToLeft,
+            WrapContents = true,
+            Padding = new Padding(0, 0, 17, 0),
+            RightToLeft = RightToLeft.No,
+            BorderStyle = BorderStyle.None,
+            Margin = new Padding(0),
+        };
+
+        FlowLayoutPanel ui_word_listItems = new FlowLayoutPanel()
+        {
+            Visible = false,
+            AutoScroll = true,
+            Dock = DockStyle.Fill,
+            BackColor = Color.White,
+            FlowDirection = FlowDirection.RightToLeft,
+            WrapContents = true,
+            Padding = new Padding(0, 0, 17, 0),
+            RightToLeft = RightToLeft.No,
+            BorderStyle = BorderStyle.None,
+            Margin = new Padding(0),
+        };
+
+        #endregion
+
+        #endregion
+
+        /*////////////////////////////////////////////////////////////////////////*/
+
         #region [ FROM DRAW UI: CONTROLS, ICONS ... ]
+
+        void f_show_label_Background_Init()
+        {
+            this.Controls.Add(ui_lbl_form_backgrounc_Init);
+            ui_lbl_form_backgrounc_Init.Width = this.Width;
+            ui_lbl_form_backgrounc_Init.Height = this.Height;
+            ui_lbl_form_backgrounc_Init.BringToFront();
+        }
+
+        public void f_hide_label_Background(int timeOut_FadeIn = 100)
+        {
+            ui_tab_Left.Visible = true;
+            ui_tab_Right.Visible = true;
+            ui_tab_Center.Visible = true;
+
+            ui_toolbar_Header.Visible = true;
+            ui_toolbar_Footer.Visible = true;
+
+            ui_tag_listItems.Visible = true;
+            ui_word_listItems.Visible = true;
+            ui_speak_listItems.Visible = true;
+
+            setTimeout.Delay(timeOut_FadeIn, () =>
+            {
+                ui_lbl_form_backgrounc_Init.crossThreadPerformSafely(() =>
+                {
+                    ui_lbl_form_backgrounc_Init.SendToBack();
+                });
+            });
+        }
 
         public void f_form_init_UI()
         {
@@ -300,7 +320,7 @@ namespace appel
             f_cat_treeView_Init();
             f_tag_init_UI();
             f_log_init_UI();
-            f_detail_initUI();
+            f_area_right_initUI();
 
             f_show_label_Background_Init();
 
@@ -925,7 +945,7 @@ namespace appel
                 {
                     setTimeout.Delay(1, () =>
                     {
-                        f_word_request_AnalyticText(text);
+                        f_ui_word_request_AnalyticText(text);
                     });
                 }
             }
@@ -933,28 +953,29 @@ namespace appel
 
         #endregion
 
-        #region [ WORD ]
+        #region [ AREA RIGHT ]
 
-        void f_detail_initUI()
+        void f_area_right_initUI()
         {
-
             ui_tab_Right.Items.AddRange(new FATabStripItem[] { 
-                ui_tab_detail_Speak ,
                 ui_tab_detail_Word,
+                ui_tab_detail_Speak ,
                 ui_tab_detail_Sentence,
                 ui_tab_detail_Grammar,
                 ui_tab_detail_Bookmark, 
             });
 
-            ui_tab_detail_Speak.Controls.AddRange(new Control[] { 
-                ui_speak_listItems,
+            ui_tab_detail_Word.Controls.AddRange(new Control[] { 
+                ui_word_listItems,
                 new Label(){ AutoSize = false, Dock = DockStyle.Left, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
                 new Label(){ AutoSize = false, Dock = DockStyle.Right, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
                 new Label(){ AutoSize = false, Dock = DockStyle.Bottom, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Height = 1 },
             });
         }
 
-        void f_word_request_AnalyticText(string s)
+        #region [ WORD ]
+
+        void f_ui_word_request_AnalyticText(string s)
         {
             oWordContent wo = api_word_LocalStore.f_analytic_Text(s);
             if (wo != null && wo.words.Length > 0)
@@ -998,10 +1019,10 @@ namespace appel
                         //};
                     }
 
-                    ui_speak_listItems.crossThreadPerformSafely(() =>
+                    ui_word_listItems.crossThreadPerformSafely(() =>
                     {
-                        ui_speak_listItems.Controls.Clear();
-                        ui_speak_listItems.Controls.AddRange(a_lbl);
+                        ui_word_listItems.Controls.Clear();
+                        ui_word_listItems.Controls.AddRange(a_lbl);
                     });
 
                     #endregion
@@ -1018,6 +1039,7 @@ namespace appel
 
         #endregion
 
+        #endregion
         /*////////////////////////////////////////////////////////////////////////*/
 
         #region [ TRANSLATE ]
