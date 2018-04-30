@@ -5,7 +5,7 @@ using System.Drawing.Text;
 using System.Windows.Forms;
 using System.ComponentModel;
 
-namespace app_sys
+namespace appel
 {
     /// <summary>
     /// Win Forms icon button. Clickable, with hover colour & tooltip.

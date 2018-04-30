@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 
 
-namespace app_sys
+namespace appel
 {
     public partial class fNotificationMsg : Form
     {

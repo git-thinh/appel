@@ -4,7 +4,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Windows.Forms;
 
-namespace app_sys
+namespace appel
 {
 
     public class VisualStudioTabControl : TabControl

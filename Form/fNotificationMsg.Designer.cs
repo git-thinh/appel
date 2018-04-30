@@ -1,4 +1,4 @@
-﻿namespace app_sys
+﻿namespace appel
 {
     partial class fNotificationMsg
     {

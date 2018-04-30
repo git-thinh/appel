@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace app_sys
+namespace appel
 {
     // You can use ThreadPool.RegisterWaitForSingleObject to wait for your own done event for each thread.  
     // The thread pool is smart enough to make use of a native thread's ability to block on multiple wait handles 

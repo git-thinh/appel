@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
-namespace app_sys
+namespace appel
 {
     //Used for WM_COPYDATA for string messages
     public struct COPYDATASTRUCT

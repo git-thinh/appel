@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
-namespace app_sys
+namespace appel
 {
     public interface IthreadMsg
     {

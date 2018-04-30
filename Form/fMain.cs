@@ -13,7 +13,7 @@ using PdfiumViewer;
 using GrayIris.Utilities.UI.Controls;
 using System.Threading;
 
-namespace app_sys
+namespace appel
 {
     public class fMain : Form
     {

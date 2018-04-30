@@ -15,7 +15,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
 
-namespace app_sys
+namespace appel
 {
     [PermissionSet(SecurityAction.LinkDemand, Name = "Everything"),
     PermissionSet(SecurityAction.InheritanceDemand, Name = "FullTrust")]

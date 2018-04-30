@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace app_sys
+namespace appel
 {
     public class oCategory
     {
