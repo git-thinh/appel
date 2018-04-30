@@ -1,0 +1,528 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7E494A78-AC7C-4412-A4A3-535C30F0EFAC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>app_sys</RootNamespace>
+    <AssemblyName>app_sys</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\data_el2\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\data_el2\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Kit\DLL\Newtonsoft.Json.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech">
+      <HintPath>Kit\DLL\System.Speech.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="app.cs" />
+    <Compile Include="Form\fNotificationMsg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\fNotificationMsg.Designer.cs">
+      <DependentUpon>fNotificationMsg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Kit\Combo\ColorComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\Combo\CustomComboBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\Combo\OldNewEvent.cs" />
+    <Compile Include="Kit\Combo\PopupControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\Combo\UserControl1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Kit\Combo\UserControl1.Designer.cs">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Kit\CrossThreadExtensions.cs" />
+    <Compile Include="Kit\Excel\ExcelWriter.cs" />
+    <Compile Include="Kit\ExecutionPlan.cs" />
+    <Compile Include="Kit\Fonts\IconButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\Fonts\IconType.cs" />
+    <Compile Include="Kit\BorderLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Class1.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Combination.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Hook.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\HotKeys\HotKeyArgs.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\HotKeys\HotKeySet.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\HotKeys\HotKeySetCollection.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\HotKeys\HotKeySetsListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\IKeyboardEvents.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\IKeyboardMouseEvents.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\IMouseEvents.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\AppEventFacade.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\AppKeyListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\AppMouseListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\BaseListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\ButtonSet.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\Callback.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\Chord.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\EventFacade.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\GlobalEventFacade.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\GlobalKeyListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\GlobalMouseListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\KeyboardState.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\KeyListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\KeysExtensions.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\MouseListener.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Implementation\Subscribe.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\KeyCombinationExtensions.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\KeyEventArgsExt.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\KeyPressEventArgsExt.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\MouseEventExtArgs.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\Sequence.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\SequenceBase.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\AppMouseStruct.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\CallbackData.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\HookHelper.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\HookIds.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\HookNativeMethods.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\HookProcedure.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\HookProcedureHandle.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\HookResult.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\HotkeysNativeMethods.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\KeyboardHookStruct.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\KeyboardNativeMethods.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\Messages.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\MouseNativeMethods.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\MouseStruct.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\Point.cs" />
+    <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\ThreadNativeMethods.cs" />
+    <Compile Include="Kit\MMF\FileMapIOException.cs" />
+    <Compile Include="Kit\MMF\MapViewStream.cs" />
+    <Compile Include="Kit\MMF\MemoryMappedFile.cs" />
+    <Compile Include="Kit\MMF\Win32APIs.cs" />
+    <Compile Include="Kit\MMF\_demo.cs" />
+    <Compile Include="Kit\mustache\ArgumentCollection.cs" />
+    <Compile Include="Kit\mustache\CompoundGenerator.cs" />
+    <Compile Include="Kit\mustache\ConditionTagDefinition.cs" />
+    <Compile Include="Kit\mustache\ContentTagDefinition.cs" />
+    <Compile Include="Kit\mustache\Context.cs" />
+    <Compile Include="Kit\mustache\ContextParameter.cs" />
+    <Compile Include="Kit\mustache\EachTagDefinition.cs" />
+    <Compile Include="Kit\mustache\ElifTagDefinition.cs" />
+    <Compile Include="Kit\mustache\ElseTagDefinition.cs" />
+    <Compile Include="Kit\mustache\FormatCompiler.cs" />
+    <Compile Include="Kit\mustache\Generator.cs" />
+    <Compile Include="Kit\mustache\HtmlFormatCompiler.cs" />
+    <Compile Include="Kit\mustache\IArgument.cs" />
+    <Compile Include="Kit\mustache\IfTagDefinition.cs" />
+    <Compile Include="Kit\mustache\IGenerator.cs" />
+    <Compile Include="Kit\mustache\IndexTagDefinition.cs" />
+    <Compile Include="Kit\mustache\InlineGenerator.cs" />
+    <Compile Include="Kit\mustache\InlineTagDefinition.cs" />
+    <Compile Include="Kit\mustache\KeyFoundEventArgs.cs" />
+    <Compile Include="Kit\mustache\KeyGenerator.cs" />
+    <Compile Include="Kit\mustache\KeyNotFoundEventArgs.cs" />
+    <Compile Include="Kit\mustache\MasterTagDefinition.cs" />
+    <Compile Include="Kit\mustache\NestedContext.cs" />
+    <Compile Include="Kit\mustache\NewlineTagDefinition.cs" />
+    <Compile Include="Kit\mustache\NumberArgument.cs" />
+    <Compile Include="Kit\mustache\PlaceholderArgument.cs" />
+    <Compile Include="Kit\mustache\PlaceholderFoundEventArgs.cs" />
+    <Compile Include="Kit\mustache\PropertyDictionary.cs" />
+    <Compile Include="Kit\mustache\RegexHelper.cs" />
+    <Compile Include="Kit\mustache\Scope.cs" />
+    <Compile Include="Kit\mustache\SetTagDefinition.cs" />
+    <Compile Include="Kit\mustache\StaticGenerator.cs" />
+    <Compile Include="Kit\mustache\StringArgument.cs" />
+    <Compile Include="Kit\mustache\Substitution.cs" />
+    <Compile Include="Kit\mustache\TagDefinition.cs" />
+    <Compile Include="Kit\mustache\TagFormattedEventArgs.cs" />
+    <Compile Include="Kit\mustache\TagParameter.cs" />
+    <Compile Include="Kit\mustache\UpcastDictionary.cs" />
+    <Compile Include="Kit\mustache\ValueRequestEventArgs.cs" />
+    <Compile Include="Kit\mustache\VariableArgument.cs" />
+    <Compile Include="Kit\mustache\VariableFoundEventArgs.cs" />
+    <Compile Include="Kit\mustache\WithTagDefinition.cs" />
+    <Compile Include="Kit\mustache\_config.cs" />
+    <Compile Include="Kit\mustache\_demo\FormatCompilerTester.cs" />
+    <Compile Include="Kit\mustache\_demo\HtmlFormatCompilerTester.cs" />
+    <Compile Include="Kit\mustache\_demo\UpcastDictionaryTester.cs" />
+    <Compile Include="Kit\NHTTP\HttpClient.cs" />
+    <Compile Include="Kit\NHTTP\HttpContext.cs" />
+    <Compile Include="Kit\NHTTP\HttpCookie.cs" />
+    <Compile Include="Kit\NHTTP\HttpCookieCollection.cs" />
+    <Compile Include="Kit\NHTTP\HttpExceptionEventHandler.cs" />
+    <Compile Include="Kit\NHTTP\HttpFileCollection.cs" />
+    <Compile Include="Kit\NHTTP\HttpMultiPartItem.cs" />
+    <Compile Include="Kit\NHTTP\HttpMultiPartRequestParser.cs" />
+    <Compile Include="Kit\NHTTP\HttpOutputStream.cs" />
+    <Compile Include="Kit\NHTTP\HttpPostedFile.cs" />
+    <Compile Include="Kit\NHTTP\HttpReadBuffer.cs" />
+    <Compile Include="Kit\NHTTP\HttpRequest.cs" />
+    <Compile Include="Kit\NHTTP\HttpRequestEventHandler.cs" />
+    <Compile Include="Kit\NHTTP\HttpRequestParser.cs" />
+    <Compile Include="Kit\NHTTP\HttpResponse.cs" />
+    <Compile Include="Kit\NHTTP\HttpServer.cs" />
+    <Compile Include="Kit\NHTTP\HttpServerState.cs" />
+    <Compile Include="Kit\NHTTP\HttpServerUtility.cs" />
+    <Compile Include="Kit\NHTTP\HttpTimeoutManager.cs" />
+    <Compile Include="Kit\NHTTP\HttpUnknownRequestParser.cs" />
+    <Compile Include="Kit\NHTTP\HttpUrlEncodedRequestParser.cs" />
+    <Compile Include="Kit\NHTTP\HttpUtil.cs" />
+    <Compile Include="Kit\NHTTP\ILog.cs" />
+    <Compile Include="Kit\NHTTP\LogManager.cs" />
+    <Compile Include="Kit\NHTTP\NHttpException.cs" />
+    <Compile Include="Kit\NHTTP\ProtocolException.cs" />
+    <Compile Include="Kit\ProtoBuf\BclHelpers.cs" />
+    <Compile Include="Kit\ProtoBuf\BufferExtension.cs" />
+    <Compile Include="Kit\ProtoBuf\BufferPool.cs" />
+    <Compile Include="Kit\ProtoBuf\CallbackAttributes.cs" />
+    <Compile Include="Kit\ProtoBuf\Compiler\CompilerContext.cs" />
+    <Compile Include="Kit\ProtoBuf\Compiler\CompilerDelegates.cs" />
+    <Compile Include="Kit\ProtoBuf\Compiler\Local.cs" />
+    <Compile Include="Kit\ProtoBuf\DataFormat.cs" />
+    <Compile Include="Kit\ProtoBuf\Extensible.cs" />
+    <Compile Include="Kit\ProtoBuf\ExtensibleUtil.cs" />
+    <Compile Include="Kit\ProtoBuf\GlobalSuppressions.cs" />
+    <Compile Include="Kit\ProtoBuf\Helpers.cs" />
+    <Compile Include="Kit\ProtoBuf\IExtensible.cs" />
+    <Compile Include="Kit\ProtoBuf\IExtension.cs" />
+    <Compile Include="Kit\ProtoBuf\ImplicitFields.cs" />
+    <Compile Include="Kit\ProtoBuf\KeyValuePairProxy.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\AttributeMap.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\BasicList.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\CallbackSet.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\MetaType.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\RuntimeTypeModel.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\SubType.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\TypeFormatEventArgs.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\TypeModel.cs" />
+    <Compile Include="Kit\ProtoBuf\Meta\ValueMember.cs" />
+    <Compile Include="Kit\ProtoBuf\NetObjectCache.cs" />
+    <Compile Include="Kit\ProtoBuf\PrefixStyle.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoContractAttribute.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoEnumAttribute.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoException.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoIgnoreAttribute.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoIncludeAttribute.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoMemberAttribute.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoReader.cs" />
+    <Compile Include="Kit\ProtoBuf\ProtoWriter.cs" />
+    <Compile Include="Kit\ProtoBuf\SerializationContext.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\ArrayDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\BlobSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\BooleanSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\ByteSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\CharSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\CompiledSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\DateTimeSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\DecimalSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\DefaultValueDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\DoubleSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\EnumSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\FieldDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\GuidSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\ImmutableCollectionDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\Int16Serializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\Int32Serializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\Int64Serializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\IProtoSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\IProtoTypeSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\ISerializerProxy.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\KeyValuePairDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\ListDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\MemberSpecifiedDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\NetObjectSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\NullDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\ParseableSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\PropertyDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\ProtoDecoratorBase.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\SByteSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\SingleSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\StringSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\SubItemSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\SurrogateSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\SystemTypeSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\TagDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\TimeSpanSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\TupleSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\TypeSerializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\UInt16Serializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\UInt32Serializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\UInt64Serializer.cs" />
+    <Compile Include="Kit\ProtoBuf\Serializers\UriDecorator.cs" />
+    <Compile Include="Kit\ProtoBuf\SubItemToken.cs" />
+    <Compile Include="Kit\ProtoBuf\WireType.cs" />
+    <Compile Include="Kit\ProtoBuf\_demo.cs" />
+    <Compile Include="Kit\VisualStudioTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\YaTabControl\delegates.cs" />
+    <Compile Include="Kit\YaTabControl\Design\YaTabControlDesigner.cs" />
+    <Compile Include="Kit\YaTabControl\Design\YaTabPageDesigner.cs" />
+    <Compile Include="Kit\YaTabControl\enums.cs" />
+    <Compile Include="Kit\YaTabControl\IYaTabDrawer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\YaTabControl\OvalTabDrawer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\YaTabControl\TabChangingEventArgs.cs" />
+    <Compile Include="Kit\YaTabControl\VsTabDrawer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\YaTabControl\XlTabDrawer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\YaTabControl\YaTabControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\YaTabControl\YaTabPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\oCategory.cs" />
+    <Compile Include="Form\fMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Kit\HtmlAgilityPack\crc32.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\EncodingFoundException.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlAttribute.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlAttributeCollection.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlCmdLine.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlCommentNode.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlConsoleListener.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlDocument.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlDocument.PathMethods.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlDocument.Xpath.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlElementFlag.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlEntity.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlNameTable.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlNode.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlNode.Encapsulator.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlNode.Xpath.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlNodeCollection.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlNodeNavigator.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlNodeType.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlParseError.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlParseErrorCode.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlTextNode.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlWeb.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlWeb.Xpath.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\HtmlWebException.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\InvalidProgramException.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\IOLibrary.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\Metro\HtmlWeb.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\Metro\InvalidProgramException.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\MixedCodeDocument.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\MixedCodeDocumentCodeFragment.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\MixedCodeDocumentFragment.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\MixedCodeDocumentFragmentList.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\MixedCodeDocumentFragmentType.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\MixedCodeDocumentTextFragment.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\NameValuePair.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\NameValuePairList.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\Trace.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\Trace.FullFramework.cs" />
+    <Compile Include="Kit\HtmlAgilityPack\Utilities.cs" />
+    <Compile Include="Kit\HtmlConvert.cs" />
+    <Compile Include="Kit\Http\HttpServer.cs" />
+    <Compile Include="Kit\Linq\DeepCopy.Assign.cs" />
+    <Compile Include="Kit\Linq\IsNumber.cs" />
+    <Compile Include="Kit\Linq\Lucene.Net.cs" />
+    <Compile Include="Kit\Linq\ReaderWriterLockSlim.cs" />
+    <Compile Include="Kit\Linq\System.Collections.Generic\HashSet.cs" />
+    <Compile Include="Kit\Linq\System.Collections.Generic\ISet.cs" />
+    <Compile Include="Kit\Linq\System.Data.Linq\MonoTODOAttribute.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Dynamic\System.Linq.Dynamic.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\BinaryExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ConditionalExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ConstantExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ElementInit.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\EmitContext.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\Expression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ExpressionPrinter.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ExpressionTransformer.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ExpressionType.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ExpressionVisitor.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\Expression_T.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\Extensions.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\InvocationExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\LambdaExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ListInitExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MemberAssignment.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MemberBinding.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MemberBindingType.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MemberExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MemberInitExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MemberListBinding.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MemberMemberBinding.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\MethodCallExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\NewArrayExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\NewExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\ParameterExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\TypeBinaryExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Expressions\UnaryExpression.cs" />
+    <Compile Include="Kit\Linq\System.Linq.Ext.cs" />
+    <Compile Include="Kit\Linq\System.Linq\Check.cs" />
+    <Compile Include="Kit\Linq\System.Linq\Enumerable.cs" />
+    <Compile Include="Kit\Linq\System.Linq\Grouping.cs" />
+    <Compile Include="Kit\Linq\System.Linq\IGrouping.cs" />
+    <Compile Include="Kit\Linq\System.Linq\ILookup_T.cs" />
+    <Compile Include="Kit\Linq\System.Linq\IOrderedEnumerable_T.cs" />
+    <Compile Include="Kit\Linq\System.Linq\IOrderedQueryable.cs" />
+    <Compile Include="Kit\Linq\System.Linq\IOrderedQueryable_T.cs" />
+    <Compile Include="Kit\Linq\System.Linq\IQueryable.cs" />
+    <Compile Include="Kit\Linq\System.Linq\IQueryable_T.cs" />
+    <Compile Include="Kit\Linq\System.Linq\IQueryProvider.cs" />
+    <Compile Include="Kit\Linq\System.Linq\Lookup.cs" />
+    <Compile Include="Kit\Linq\System.Linq\OrderedEnumerable.cs" />
+    <Compile Include="Kit\Linq\System.Linq\OrderedSequence.cs" />
+    <Compile Include="Kit\Linq\System.Linq\Queryable.cs" />
+    <Compile Include="Kit\Linq\System.Linq\QueryableEnumerable.cs" />
+    <Compile Include="Kit\Linq\System.Linq\QueryableTransformer.cs" />
+    <Compile Include="Kit\Linq\System.Linq\QuickSort.cs" />
+    <Compile Include="Kit\Linq\System.Linq\SortContext.cs" />
+    <Compile Include="Kit\Linq\System.Linq\SortDirection.cs" />
+    <Compile Include="Kit\Linq\System.Linq\SortSequenceContext.cs" />
+    <Compile Include="Kit\Linq\System.Runtime.CompilerServices\DynamicAttribute.cs" />
+    <Compile Include="Kit\Linq\System.Runtime.CompilerServices\ExecutionScope.cs" />
+    <Compile Include="Kit\Linq\System.Runtime.CompilerServices\ExtensionAttribute.cs" />
+    <Compile Include="Kit\Linq\System.Runtime.CompilerServices\IStrongBox.cs" />
+    <Compile Include="Kit\Linq\System.Runtime.CompilerServices\StrongBox_T.cs" />
+    <Compile Include="Kit\Linq\System\Action.cs" />
+    <Compile Include="Kit\Linq\System\Func.cs" />
+    <Compile Include="Kit\Linq\Tuple\IStructuralComparable.cs" />
+    <Compile Include="Kit\Linq\Tuple\IStructuralEquatable.cs" />
+    <Compile Include="Kit\Linq\Tuple\Tuple.cs" />
+    <Compile Include="API\msg.cs" />
+    <Compile Include="API\threadMsg.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="API\api.cs" />
+    <Compile Include="Kit\TabStrip\BaseClasses\BaseStyledPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\TabStrip\Control\FATabStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\TabStrip\Control\FATabStripCloseButton.cs" />
+    <Compile Include="Kit\TabStrip\Control\FATabStripItem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Kit\TabStrip\Control\FATabStripItemCollection.cs" />
+    <Compile Include="Kit\TabStrip\Control\FATabStripMenuGlyph.cs" />
+    <Compile Include="Kit\TabStrip\Delegates.cs" />
+    <Compile Include="Kit\TabStrip\Design\FATabStripDesigner.cs" />
+    <Compile Include="Kit\TabStrip\Design\FATabStripItemDesigner.cs" />
+    <Compile Include="Kit\TabStrip\Design\ICaptionSupport.cs" />
+    <Compile Include="Kit\TabStrip\Enums.cs" />
+    <Compile Include="Kit\TabStrip\Helpers\CollectionWithEvents.cs" />
+    <Compile Include="Model\oWord.cs" />
+    <Compile Include="Kit\RoundLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Model\oNode.cs" />
+    <Compile Include="_CONST.cs" />
+    <Compile Include="_NOTE.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form\fNotificationMsg.resx">
+      <DependentUpon>fNotificationMsg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kit\Combo\UserControl1.resx">
+      <DependentUpon>UserControl1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kit\DLL\Newtonsoft.Json.dll" />
+    <EmbeddedResource Include="Kit\YaTabControl\YaTabControl.resx">
+      <DependentUpon>YaTabControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Kit\YaTabControl\YaTabPage.resx">
+      <DependentUpon>YaTabPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Kit\DLL\System.Speech.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Kit\Linq\_demo\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Kit\DLL\PdfiumViewer.dll" />
+    <Content Include="Kit\MMF\ReadMe.txt" />
+    <Content Include="Kit\mustache\mustache-sharp.csproj" />
+    <Content Include="Kit\mustache\_ReadMe.txt" />
+    <Content Include="Kit\ProtoBuf\_ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="PdfiumViewer\PdfiumViewer.csproj">
+      <Project>{438914b6-5d1c-482c-b942-5c0e057eef6f}</Project>
+      <Name>PdfiumViewer</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
