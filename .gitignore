@@ -154,3 +154,7 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+Kit/DLL/PdfiumViewer.dll
+Kit/DLL/PdfiumViewer.pdb
+Kit/DLL/PdfiumViewer.pdb
+Kit/DLL/nl/PdfiumViewer.resources.dll

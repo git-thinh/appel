@@ -571,6 +571,8 @@ namespace appel
         void f_cat_treeView_addNewNodeChilds_Loading(TreeNode node)
         {
             oNode item = (oNode)node.Tag;
+            if (!File.Exists(item.path)) return;
+
             string[] paths = Directory.GetDirectories(item.path);
             if (paths.Length > 0)
             {
@@ -755,6 +757,7 @@ namespace appel
                     }
                 }
             }
+            if (!File.Exists(doc.path)) return;
 
             PdfViewer pdfViewer = null;
             Panel box_text = null;

@@ -199,7 +199,7 @@ namespace appel
 
                     fmain.f_doc_viewContent(new oNode()
                     {
-                        path = @"D:\Projects\data_el2\w2ui-demos-introduction.txt",
+                        path = @"w2ui-demos-introduction.txt",
                         name = "Test TEXT",
                         root = false,
                         type = oNodeType.TEXT

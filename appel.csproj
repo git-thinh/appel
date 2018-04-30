@@ -53,6 +53,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Speech">
       <HintPath>Kit\DLL\System.Speech.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
@@ -73,9 +74,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Kit\Combo\OldNewEvent.cs" />
-    <Compile Include="Kit\Combo\PopupControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Kit\Combo\PopupControl.cs" />
     <Compile Include="Kit\Combo\UserControl1.cs">
       <SubType>UserControl</SubType>
     </Compile>
