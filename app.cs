@@ -30,12 +30,7 @@ namespace appel
         static Dictionary<string, IthreadMsg> dicService = null;
         static object lockResponse = new object();
         static Dictionary<string, msg> dicResponses = null;
-
-        static List<string> listFolderPath = new List<string>() { 
-            @"D:\Projects\data_el2",
-            @"D:\EL",
-        };
-        
+         
         #endregion
 
         static app()
@@ -72,6 +67,10 @@ namespace appel
 
         #region [ APP ]
 
+        public static IMAIN get_Main() {
+            return fmain;
+        }
+
         public static void notification_Show(string msg, int duration_ = 0)
         {
             if (fmain != null) fmain.Invoke((MethodInvoker)delegate() { new fNotificationMsg(msg, duration_).Show(); });
@@ -80,36 +79,27 @@ namespace appel
         public static string postMessageToService(msg m)
         {
             if (m == null) return string.Empty;
-            if (m.Key == string.Empty)
-                m.Key = Guid.NewGuid().ToString();
+            if (m.KEY == string.Empty)
+                m.KEY = Guid.NewGuid().ToString();
 
             if (dicService.ContainsKey(m.API)) dicService[m.API].Execute(m);
 
-            return m.Key;
+            return m.KEY;
         }
 
         public static void RUN()
         {
+            //string s = api_crawler.getHtml("https://dictionary.cambridge.org/grammar/british-grammar/");
+            //return;
+
             dicResponses = new Dictionary<string, msg>();
             dicService = new Dictionary<string, IthreadMsg>();
             fmain = new fMain();
 
-            f_tag_loadFile();
-
-            //||| WORD  
-            dicService.Add(_API.WORD_LOAD_LOCAL, new threadMsg(new api_word_LocalStore(), fmain.f_api_word_responseMsg));
-
-            //var word_Dowload = new threadMsg(new api_word_Download());
-            //word_Dowload.OnMessage += (se, ev) => fmain.f_word_responseMsgFromService(ev.Message);
-            //dicService.Add(_api.WORD_DOWNLOAD, word_Dowload);
-
-            //||| CRAWLER
-
-
-            //||| TRANSLATOR 
-            //var msgTranslater = new threadMsg(new api_Translater());
-            //msgTranslater.OnMessage += (se, ev) => fmain.f_translate_onMessage(ev.Message);
-            //dicService.Add(_api.TRANSLATER, msgTranslater);
+            dicService.Add(_API.WORD_LOAD_LOCAL, new threadMsg(new api_word_LocalStore(), fmain.f_api_word_LocalStore_responseMsg)); 
+            dicService.Add(_API.SETTING_APP, new threadMsg(new api_settingApp(), fmain.f_api_settingApp_responseMsg));
+            dicService.Add(_API.FOLDER_ANYLCTIC, new threadMsg(new api_folder_Analytic(), fmain.f_api_folder_Analytic_responseMsg));
+            dicService.Add(_API.CRAWLER, new threadMsg(new api_crawler(), fmain.f_api_crawler_responseMsg));
 
             //||| MAIN
             fmain.Shown += main_Shown;
@@ -183,11 +173,13 @@ namespace appel
             fmain.f_form_init_UI();
             fmain.f_hide_label_Background(100);
 
+            postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_REGISTER_PATH, Input = "https://dictionary.cambridge.org/grammar/british-grammar/" });
+
             setTimeout.Delay(300, () =>
             {
                 fmain.crossThreadPerformSafely(() =>
                 {
-                    fmain.f_tag_Reload(listTag.ToArray());
+                    //fmain.f_tag_Reload(api_settingApp.);
 
                     //fmain.f_doc_viewContent(new oNode()
                     //{
@@ -197,76 +189,19 @@ namespace appel
                     //    type = oNodeType.PDF
                     //});
 
-                    fmain.f_doc_viewContent(new oNode()
-                    {
-                        path = @"w2ui-demos-introduction.txt",
-                        name = "Test TEXT",
-                        root = false,
-                        type = oNodeType.TEXT
-                    });
+                    //fmain.f_doc_viewContent(new oNode()
+                    //{
+                    //    path = @"w2ui-demos-introduction.txt",
+                    //    name = "Test TEXT",
+                    //    root = false,
+                    //    type = oNodeType.TEXT
+                    //});
 
                 });
             });
 
             //app.notification_Show("Hi, " + app.app_name, 3000);
-        }
-
-        #region [ FOLDER ]
-
-        public static string[] f_folder_getAll()
-        {
-            return listFolderPath.ToArray();
-        }
-
-        public static bool f_folder_Add(string path)
-        {
-            if (string.IsNullOrEmpty(path)) return false;
-            path = path.Trim().ToLower();
-
-            if (listFolderPath.IndexOf(path) == -1)
-            {
-                listFolderPath.Add(path);
-                return true;
-            }
-            else return false;
-        }
-
-        public static void f_folder_Analytic(string[] paths)
-        {
-
-        }
-
-        #endregion
-
-        #region [ TAG ]
-
-        static List<string> listTag = new List<string>() { };
-
-        public static void f_tag_loadFile()
-        {
-            if (File.Exists("tag.txt"))
-                listTag = File.ReadAllText("tag.txt").ToLower().Split(',').Select(x => x.Trim())
-                    .Distinct().ToList();
-        }
-
-        public static string[] f_tag_getAll()
-        {
-            return listTag.ToArray();
-        }
-
-        public static bool f_tag_AddNew(string tag)
-        {
-            tag = tag.Trim().ToLower();
-            if (listTag.IndexOf(tag) == -1)
-            {
-                listTag.Add(tag);
-                return true;
-            }
-            return false;
-        }
-
-
-        #endregion
+        } 
     }
 
     class Program

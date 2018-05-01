@@ -26,7 +26,10 @@ namespace appel
     {
         public string API = string.Empty;
 
-        public string Key = string.Empty;
+        public string KEY = string.Empty;
+
+        public string Log = string.Empty;
+
         public object Input { set; get; }
         public msgOutput Output { set; get; }
         public msg() {
@@ -35,7 +38,7 @@ namespace appel
 
         public static msg create_Key(string key, object data)
         {
-            return new msg() { Input = data, Key = key };
+            return new msg() { Input = data, KEY = key };
         }
     }
 

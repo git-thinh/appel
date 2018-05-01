@@ -301,29 +301,8 @@
     <Compile Include="Kit\VisualStudioTabControl.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Kit\YaTabControl\delegates.cs" />
-    <Compile Include="Kit\YaTabControl\Design\YaTabControlDesigner.cs" />
-    <Compile Include="Kit\YaTabControl\Design\YaTabPageDesigner.cs" />
-    <Compile Include="Kit\YaTabControl\enums.cs" />
-    <Compile Include="Kit\YaTabControl\IYaTabDrawer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Kit\YaTabControl\OvalTabDrawer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Kit\YaTabControl\TabChangingEventArgs.cs" />
-    <Compile Include="Kit\YaTabControl\VsTabDrawer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Kit\YaTabControl\XlTabDrawer.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Kit\YaTabControl\YaTabControl.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Kit\YaTabControl\YaTabPage.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Model\oCrawler.cs" />
+    <Compile Include="Model\oSetting.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -481,12 +460,6 @@
       <DependentUpon>UserControl1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Kit\DLL\Newtonsoft.Json.dll" />
-    <EmbeddedResource Include="Kit\YaTabControl\YaTabControl.resx">
-      <DependentUpon>YaTabControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Kit\YaTabControl\YaTabPage.resx">
-      <DependentUpon>YaTabPage.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>

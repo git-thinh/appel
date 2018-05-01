@@ -56,7 +56,7 @@ namespace appel
                     if (_exit == false)
                     {
                         msg m = api.Execute(_msg);
-                        if (onMessageComplete != null) onMessageComplete.Invoke(this, new threadMsgEventArgs(m));
+                        //if (onMessageComplete != null) onMessageComplete.Invoke(this, new threadMsgEventArgs(m));
                     }
                     tm.ResetEvent.Reset(); 
                 }

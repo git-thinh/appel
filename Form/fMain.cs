@@ -10,12 +10,11 @@ using FarsiLibrary.Win;
 using System.Diagnostics;
 using Gma.System.MouseKeyHook;
 using PdfiumViewer;
-using GrayIris.Utilities.UI.Controls;
 using System.Threading;
 
 namespace appel
 {
-    public class fMain : Form
+    public class fMain : Form, IMAIN
     {
         const bool allow_hookMouseWheel = false;
 
@@ -45,7 +44,7 @@ namespace appel
             Dock = DockStyle.None,
             Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top | AnchorStyles.Bottom,
             Location = new Point(0, 0),
-        }; 
+        };
 
         #region [ CONTRACTOR UI: HEADER ]
 
@@ -100,7 +99,7 @@ namespace appel
         FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "Content", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Folder = new FATabStripItem() { Title = "Folder", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Search = new FATabStripItem() { Title = "Find", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        
+
 
         TreeView ui_cat_treeView;
 
@@ -277,14 +276,14 @@ namespace appel
 
 
 
-            this.Controls.AddRange(new Control[] { 
+            this.Controls.AddRange(new Control[] {
 
                 ui_tab_Center,
 
-                ui_splitter_Left,ui_tab_Left, 
+                ui_splitter_Left,ui_tab_Left,
                 new Label(){ Dock = DockStyle.Left, AutoSize = false, Width = 2 },
 
-                ui_splitter_Right,ui_tab_Right, 
+                ui_splitter_Right,ui_tab_Right,
 
                 ui_toolbar_Header,
                 //new Label(){ Dock = DockStyle.Top, AutoSize = false, Height = 2 },
@@ -298,16 +297,16 @@ namespace appel
             });
 
 
-            ui_tab_Left.Items.AddRange(new FATabStripItem[] { 
+            ui_tab_Left.Items.AddRange(new FATabStripItem[] {
                 ui_tab_Tag,
                 ui_tab_Content,
                 ui_tab_Folder,
-                ui_tab_Search, 
+                ui_tab_Search,
             });
 
-            ui_tab_Center.Items.AddRange(new FATabStripItem[] { 
-                ui_log_Tab, 
-                ui_tab_Help, 
+            ui_tab_Center.Items.AddRange(new FATabStripItem[] {
+                ui_log_Tab,
+                ui_tab_Help,
             });
 
             ui_toolbar_Header.MouseMove += new MouseEventHandler(this.f_form_move_MouseDown);
@@ -337,11 +336,11 @@ namespace appel
             ui_log_btnClean = new IconButton(18) { IconType = IconType.ios_trash_outline, Dock = DockStyle.Right };
             ui_log_btnCopy = new IconButton(20) { IconType = IconType.ios_copy_outline, Dock = DockStyle.Right };
 
-            box.Controls.AddRange(new Control[]{ 
+            box.Controls.AddRange(new Control[]{
                 new Label() { Dock = DockStyle.Right, AutoSize = false, Width = 7 },
                 ui_log_btnCopy ,
                 new Label() { Dock = DockStyle.Right, AutoSize = false, Width = 7 },
-                ui_log_btnClean, 
+                ui_log_btnClean,
                 new Label() { Dock = DockStyle.Right, AutoSize = false, Width = 7  },
             });
         }
@@ -369,7 +368,7 @@ namespace appel
             ui_cat_btn_pathSetting = new IconButton() { IconType = IconType.ios_gear_outline, Dock = DockStyle.Left, ToolTipText = "Setting" };
 
 
-            ui_toolbar_Header.Controls.AddRange(new Control[] { 
+            ui_toolbar_Header.Controls.AddRange(new Control[] {
                 ui_lbl_path_doc_current,
 
                 new Label() { Dock = DockStyle.Left, AutoSize = false, Width = 7 },
@@ -383,8 +382,8 @@ namespace appel
 
                 ui_btn_app_right_ShowHide,
                 ui_btn_app_Min,
-                ui_btn_app_Max, 
-                ui_btn_app_Exit, 
+                ui_btn_app_Max,
+                ui_btn_app_Exit,
             });
             ui_btn_app_left_ShowHide.Click += (se, ev) =>
             {
@@ -441,13 +440,12 @@ namespace appel
                         string path = fol.SelectedPath.Trim();
                         if (!string.IsNullOrEmpty(path))
                         {
-                            if (app.f_folder_Add(path))
+                            if (string.IsNullOrEmpty(path)) return;
+                            path = path.Trim().ToLower();
+
+                            if (api_settingApp.get_checkExistFolder(path) == false)
                             {
-                                f_cat_treeView_addNewNodeRoot_Loading(new string[] { path });
-                            }
-                            else
-                            {
-                                MessageBox.Show("EXIST: " + path);
+                                app.postMessageToService(new msg() { API = _API.SETTING_APP, KEY = _API.SETTING_APP_KEY_UPDATE_FOLDER, Input = path });
                             }
                         }
                     }
@@ -518,13 +516,13 @@ namespace appel
 
 
             ui_cat_treeView.NodeMouseClick += f_cat_treeView_NodeMouseClick;
-            ui_tab_Folder.Controls.AddRange(new Control[] { 
+            ui_tab_Folder.Controls.AddRange(new Control[] {
                 ui_cat_treeView ,
                 new Label(){ Dock = DockStyle.Bottom, AutoSize = false, Height = 1 , BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR },
                 new Label(){ Dock = DockStyle.Left, AutoSize = false, Width = 1, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR },
                 new Label(){ Dock = DockStyle.Right, AutoSize = false, Width = 1 , BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR },
             });
-            string[] paths = app.f_folder_getAll();
+            string[] paths = api_settingApp.get_listFolder();
             f_cat_treeView_addNewNodeRoot_Loading(paths);
         }
 
@@ -563,8 +561,6 @@ namespace appel
                         Tag = new oNode() { name = name, path = path, anylatic = false, root = true, type = oNodeType.FOLDER }
                     });
                 }
-
-                app.f_folder_Analytic(paths);
             }
         }
 
@@ -587,7 +583,6 @@ namespace appel
                         Tag = new oNode() { name = name, path = path, anylatic = false, root = false, type = oNodeType.FOLDER }
                     });
                 }
-                app.f_folder_Analytic(paths);
             }
 
             paths = "*.txt|*.pdf|*.html|*.htm|*.pptx|*.ppt|*.docx|*.doc|*.xlsx|*.xls"
@@ -607,7 +602,6 @@ namespace appel
                         Tag = new oNode() { name = name, path = path, anylatic = false, root = true }
                     });
                 }
-                app.f_folder_Analytic(paths);
             }
 
         }
@@ -628,9 +622,9 @@ namespace appel
                 Height = 27
             };
 
-            ui_tab_Tag.Controls.AddRange(new Control[] { 
+            ui_tab_Tag.Controls.AddRange(new Control[] {
                 ui_tag_listItems,
-                toolbar, 
+                toolbar,
                 new Label(){ Dock = DockStyle.Bottom, AutoSize = false, Height = 1 , BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR },
                 new Label(){ Dock = DockStyle.Left, AutoSize = false, Width = 1, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR },
                 new Label(){ Dock = DockStyle.Right, AutoSize = false, Width = 1 , BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR },
@@ -651,7 +645,7 @@ namespace appel
             var btn_edit = new IconButton(21) { IconType = IconType.edit, Dock = DockStyle.Left };
             var btn_remove = new IconButton(19) { IconType = IconType.trash_a, Dock = DockStyle.Left };
 
-            toolbar.Controls.AddRange(new Control[] { 
+            toolbar.Controls.AddRange(new Control[] {
                 btn_remove,
                 new Label(){ Dock = DockStyle.Left, Width = 5, AutoSize = false },
                 btn_edit,
@@ -775,18 +769,18 @@ namespace appel
                     #region [ PDF ]
 
                     pdfViewer = new PdfViewer()
-                  {
-                      Dock = DockStyle.Fill,
-                      ShowToolbar = false,
-                      Document = null,
-                      BackColor = Color.White,
-                      ZoomMode = PdfViewerZoomMode.FitWidth,
-                      BorderStyle = BorderStyle.None,
-                      ShowBookmarks = true,
-                      Margin = new Padding(0),
-                      Padding = new Padding(0),
-                      Visible = false,
-                  };
+                    {
+                        Dock = DockStyle.Fill,
+                        ShowToolbar = false,
+                        Document = null,
+                        BackColor = Color.White,
+                        ZoomMode = PdfViewerZoomMode.FitWidth,
+                        BorderStyle = BorderStyle.None,
+                        ShowBookmarks = true,
+                        Margin = new Padding(0),
+                        Padding = new Padding(0),
+                        Visible = false,
+                    };
 
                     if (pdfViewer.Document != null)
                         pdfViewer.Document.Dispose();
@@ -808,7 +802,7 @@ namespace appel
                     ui_tab_Center.AddTab(tab, true);
                     tab.Tag = doc;
 
-                    tab.Controls.AddRange(new Control[]{  
+                    tab.Controls.AddRange(new Control[]{
                             pdfViewer,
                     });
                     #endregion
@@ -819,7 +813,7 @@ namespace appel
                         Height = 27,
                         BackColor = _CONST.TAB_ACTIVE_TOOLBAR_BACKGROUND,
                     };
-                    tab.Controls.AddRange(new Control[]{  
+                    tab.Controls.AddRange(new Control[]{
                             toolbar,
                             //new Label(){ AutoSize = false, Dock = DockStyle.Top, BackColor = Color.Gray, Height = 1 },
                             new Label(){ AutoSize = false, Dock = DockStyle.Left, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
@@ -832,14 +826,14 @@ namespace appel
                     #region [ TEXT ]
 
                     box_text = new Panel()
-                  {
-                      Dock = DockStyle.Fill,
-                      Padding = new Padding(15, 0, 0, 0),
-                      BackColor = Color.White,
-                      AutoScroll = true,
-                      Name = doc.path,
-                      Visible = false,
-                  };
+                    {
+                        Dock = DockStyle.Fill,
+                        Padding = new Padding(15, 0, 0, 0),
+                        BackColor = Color.White,
+                        AutoScroll = true,
+                        Name = doc.path,
+                        Visible = false,
+                    };
 
                     tab = new FATabStripItem(tit, null)
                     {
@@ -896,13 +890,13 @@ namespace appel
                         //    new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
                         //    growLabel
                         //});
-                        box_text.Controls.AddRange(new Control[]{  
+                        box_text.Controls.AddRange(new Control[]{
                             new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
                             growLabel
                         });
                     }
 
-                    box_text.Controls.AddRange(new Control[]{  
+                    box_text.Controls.AddRange(new Control[]{
                             new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
                             new GrowLabel() {
                                     Text = a[0],
@@ -923,7 +917,7 @@ namespace appel
                         Height = 27,
                         BackColor = _CONST.TAB_ACTIVE_TOOLBAR_BACKGROUND,
                     };
-                    tab.Controls.AddRange(new Control[]{  
+                    tab.Controls.AddRange(new Control[]{
                             toolbar,
                             //new Label(){ AutoSize = false, Dock = DockStyle.Top, BackColor = Color.Gray, Height = 1 },
                             new Label(){ AutoSize = false, Dock = DockStyle.Left, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
@@ -951,6 +945,8 @@ namespace appel
                         f_ui_word_request_AnalyticText(text);
                     });
                 }
+
+                app.postMessageToService(new msg() { API = _API.SETTING_APP, KEY = _API.SETTING_APP_KEY_UPDATE_NODE_OPENING, Input = doc });
             }
         }
 
@@ -960,15 +956,15 @@ namespace appel
 
         void f_area_right_initUI()
         {
-            ui_tab_Right.Items.AddRange(new FATabStripItem[] { 
+            ui_tab_Right.Items.AddRange(new FATabStripItem[] {
                 ui_tab_detail_Word,
                 ui_tab_detail_Speak ,
                 ui_tab_detail_Sentence,
                 ui_tab_detail_Grammar,
-                ui_tab_detail_Bookmark, 
+                ui_tab_detail_Bookmark,
             });
 
-            ui_tab_detail_Word.Controls.AddRange(new Control[] { 
+            ui_tab_detail_Word.Controls.AddRange(new Control[] {
                 ui_word_listItems,
                 new Label(){ AutoSize = false, Dock = DockStyle.Left, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
                 new Label(){ AutoSize = false, Dock = DockStyle.Right, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
@@ -987,62 +983,10 @@ namespace appel
             }
         }
 
-        public void f_api_word_responseMsg(object sender, threadMsgEventArgs e)
-        {
-            msg m = e.Message;
-            if (m == null) return;
-            string[] a = null;
-            oWord wo = null;
-            switch (m.API)
-            {
-                case _API.WORD_LOAD_LOCAL:
-                    #region
-                    a = (string[])m.Output.Data;
-                    Label[] a_lbl = new Label[a.Length];
-                    for (int i = 0; i < a.Length; i++)
-                    {
-                        a_lbl[i] = new Label()
-                        {
-                            Text = a[i],
-                            AutoSize = true,
-                            BackColor = Color.WhiteSmoke,
-                            TextAlign = ContentAlignment.MiddleCenter,
-                            Font = font_content_P,
-                            Margin = new Padding(7, 5, 1, 5),
-                            Padding = new Padding(1, 3, 1, 3),
-                            BorderStyle = BorderStyle.None,
-                            RightToLeft = System.Windows.Forms.RightToLeft.No,
-                        };
-
-                        //a_lbl[i].MouseHover += (se, ev) => { a_lbl[i].BackColor = Color.Orange; };
-                        //a_lbl[i].MouseLeave += (se, ev) => { a_lbl[i].BackColor = Color.WhiteSmoke; };
-                        //a_lbl[i].Click += (se, ev) =>
-                        //{
-                        //    a_lbl[i].BackColor = Color.Orange;
-                        //};
-                    }
-
-                    ui_word_listItems.crossThreadPerformSafely(() =>
-                    {
-                        ui_word_listItems.Controls.Clear();
-                        ui_word_listItems.Controls.AddRange(a_lbl);
-                    });
-
-                    #endregion
-                    break;
-                case _API.WORD_DOWNLOAD:
-                    #region
-
-
-
-                    #endregion
-                    break;
-            }
-        }
-
         #endregion
 
         #endregion
+
         /*////////////////////////////////////////////////////////////////////////*/
 
         #region [ TRANSLATE ]
@@ -1247,5 +1191,110 @@ namespace appel
 
         #endregion
 
+        public void f_api_word_LocalStore_responseMsg(object sender, threadMsgEventArgs e)
+        {
+            msg m = e.Message;
+            if (m == null) return;
+            string[] a = null;
+            oWord wo = null;
+            switch (m.API)
+            {
+                case _API.WORD_LOAD_LOCAL:
+                    #region
+                    a = (string[])m.Output.Data;
+                    Label[] a_lbl = new Label[a.Length];
+                    for (int i = 0; i < a.Length; i++)
+                    {
+                        a_lbl[i] = new Label()
+                        {
+                            Text = a[i],
+                            AutoSize = true,
+                            BackColor = Color.WhiteSmoke,
+                            TextAlign = ContentAlignment.MiddleCenter,
+                            Font = font_content_P,
+                            Margin = new Padding(7, 5, 1, 5),
+                            Padding = new Padding(1, 3, 1, 3),
+                            BorderStyle = BorderStyle.None,
+                            RightToLeft = System.Windows.Forms.RightToLeft.No,
+                        };
+
+                        //a_lbl[i].MouseHover += (se, ev) => { a_lbl[i].BackColor = Color.Orange; };
+                        //a_lbl[i].MouseLeave += (se, ev) => { a_lbl[i].BackColor = Color.WhiteSmoke; };
+                        //a_lbl[i].Click += (se, ev) =>
+                        //{
+                        //    a_lbl[i].BackColor = Color.Orange;
+                        //};
+                    }
+
+                    ui_word_listItems.crossThreadPerformSafely(() =>
+                    {
+                        ui_word_listItems.Controls.Clear();
+                        ui_word_listItems.Controls.AddRange(a_lbl);
+                    });
+
+                    #endregion
+                    break;
+                case _API.WORD_DOWNLOAD:
+                    #region
+
+
+
+                    #endregion
+                    break;
+            }
+        }
+
+        public void f_api_folder_Analytic_responseMsg(object sender, threadMsgEventArgs e)
+        {
+            msg m = e.Message;
+            if (m == null && m.Output == null) return;
+
+        }
+
+        public void f_api_settingApp_responseMsg(object sender, threadMsgEventArgs e)
+        {
+            msg m = e.Message;
+            if (m == null && m.Output == null) return;
+
+        }
+
+        public void f_api_crawler_responseMsg(object sender, threadMsgEventArgs e)
+        {
+            msg m = e.Message;
+            if (m == null && m.Output == null) return;
+            if (string.IsNullOrEmpty(m.Log)) return;
+            string s = ui_log_Text.Text;
+
+            ui_log_Text.crossThreadPerformSafely(() =>
+            {
+                ui_log_Text.Text = m.Log + Environment.NewLine + s;
+            });
+        }
+
+        public void api_responseMsg(msg m)
+        {
+            if (m == null || m.Output == null) return;
+            string s = string.Empty;
+
+            switch (m.API) {
+                case _API.CRAWLER:
+                    switch (m.KEY) {
+                        case _API.CRAWLER_KEY_REQUEST_LINK:
+                            oLink link = (oLink)m.Input;
+                            ui_log_Text.crossThreadPerformSafely(() =>
+                            {
+                                ui_log_Text.Text +=  Environment.NewLine + m.Log + Environment.NewLine;
+                            });
+                            break;
+                        case _API.CRAWLER_KEY_COMPLETE: 
+                            ui_log_Text.crossThreadPerformSafely(() =>
+                            {
+                                ui_log_Text.Text += Environment.NewLine + m.Log + Environment.NewLine;
+                            });
+                            break;
+                    }
+                    break;
+            }
+        }
     }
 }

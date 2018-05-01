@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProtoBuf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -19,12 +20,19 @@ namespace appel
         FOLDER,
     }
 
+
+    [ProtoContract]
     public class oNode
     {
+        [ProtoMember(1)]
         public string name { set; get; }
+
+        [ProtoMember(2)]
         public string text { set; get; }
 
         string _path = string.Empty;
+
+        [ProtoMember(3)]
         public string path
         {
             set
@@ -58,9 +66,13 @@ namespace appel
             }
         }
 
+        [ProtoMember(4)]
         public bool anylatic { set; get; }
+         
+        [ProtoMember(5)]
         public bool root { set; get; }
 
+        [ProtoMember(6)]
         public oNodeType type { get; set; }
     } 
 }
