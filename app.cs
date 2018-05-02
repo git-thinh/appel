@@ -173,31 +173,32 @@ namespace appel
             fmain.f_form_init_UI();
             fmain.f_hide_label_Background(100);
 
-            postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_REGISTER_PATH, Input = "https://dictionary.cambridge.org/grammar/british-grammar/" });
+            //postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_REGISTER_PATH, Input = "https://dictionary.cambridge.org/grammar/british-grammar/" });
+            postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT, Input = @"E:\data_el2\crawler.bin" });
 
             setTimeout.Delay(300, () =>
             {
-                fmain.crossThreadPerformSafely(() =>
-                {
-                    //fmain.f_tag_Reload(api_settingApp.);
+                //fmain.crossThreadPerformSafely(() =>
+                //{
+                //    //fmain.f_tag_Reload(api_settingApp.);
 
-                    //fmain.f_doc_viewContent(new oNode()
-                    //{
-                    //    path = @"D:\EL\tu-vung-hay-gap-nhat-trong-ky-thi-toeic (1).pdf",
-                    //    name = "Test PDF",
-                    //    root = false,
-                    //    type = oNodeType.PDF
-                    //});
+                //    //fmain.f_doc_viewContent(new oNode()
+                //    //{
+                //    //    path = @"D:\EL\tu-vung-hay-gap-nhat-trong-ky-thi-toeic (1).pdf",
+                //    //    name = "Test PDF",
+                //    //    root = false,
+                //    //    type = oNodeType.PDF
+                //    //});
 
-                    //fmain.f_doc_viewContent(new oNode()
-                    //{
-                    //    path = @"w2ui-demos-introduction.txt",
-                    //    name = "Test TEXT",
-                    //    root = false,
-                    //    type = oNodeType.TEXT
-                    //});
+                //    //fmain.f_doc_viewContent(new oNode()
+                //    //{
+                //    //    path = @"w2ui-demos-introduction.txt",
+                //    //    name = "Test TEXT",
+                //    //    root = false,
+                //    //    type = oNodeType.TEXT
+                //    //});
 
-                });
+                //});
             });
 
             //app.notification_Show("Hi, " + app.app_name, 3000);

@@ -25,6 +25,7 @@ namespace appel
         public const string CRAWLER_KEY_REGISTER_PATH = "CRAWLER_KEY_REGISTER_PATH";
         public const string CRAWLER_KEY_REQUEST_LINK = "CRAWLER_KEY_REQUEST_LINK";
         public const string CRAWLER_KEY_CONVERT_HTML_TO_TEXT = "CRAWLER_KEY_CONVERT_HTML_TO_TEXT";
+        public const string CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT = "CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT";
         public const string CRAWLER_KEY_COMPLETE = "CRAWLER_KEY_COMPLETE";
 
         public const string CONTENT = "CONTENT";
@@ -144,6 +145,7 @@ namespace appel
             if (m == null || m.Input == null) return m;
             string url_input = string.Empty;
             HttpWebRequest w;
+            HtmlDocument doc = new HtmlDocument();
             switch (m.KEY)
             {
                 case _API.CRAWLER_KEY_REGISTER_PATH:
@@ -176,11 +178,14 @@ namespace appel
                             string[] url_crawled;
                             lock (lockHtml)
                             {
-                                if (dicHtml.ContainsKey(url) == false) dicHtml.Add(url, htm);
+                                if (dicHtml.ContainsKey(url) == false)
+                                {
+                                    string htm_format = format_HTML(htm);
+                                    dicHtml.Add(url, htm_format); 
+                                }
                                 url_crawled = dicHtml.Keys.ToArray();
                             }
 
-                            HtmlDocument doc = new HtmlDocument();
                             doc.LoadHtml(htm);
 
                             lock (lockUri)
@@ -243,16 +248,23 @@ namespace appel
 
                             string url = rs.ResponseUri.ToString();
                             string[] url_crawled;
+
                             lock (lockHtml)
                             {
-                                if (dicHtml.ContainsKey(url) == false) dicHtml.Add(url, htm);
+                                if (dicHtml.ContainsKey(url) == false)
+                                {
+                                    string htm_format = format_HTML(htm);
+                                    dicHtml.Add(url, htm_format);
+                                    Interlocked.Increment(ref contentCounter);
+
+                                    f_responseToMain(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_COMPLETE, Log = m.KEY + ": " + contentCounter.ToString() + " = " + url });
+                                }
                                 url_crawled = dicHtml.Keys.ToArray();
                             }
 
                             /////////////////////////////////////////
-                            f_responseToMain(m);
+                            //f_responseToMain(m);
 
-                            HtmlDocument doc = new HtmlDocument();
                             doc.LoadHtml(htm);
 
                             lock (lockUri)
@@ -276,21 +288,21 @@ namespace appel
                                     .ToArray();
 
 
-                                var div_con = doc.DocumentNode 
-                                    .SelectNodes("//article")
-                                    .ToArray();
-                                if (div_con.Length > 0)
-                                {
-                                    string con = div_con[0].InnerHtml;
-                                    lock (lockContent)
-                                    {
-                                        if (dicContent.ContainsKey(url) == false)
-                                            dicContent.Add(url, con);
-                                    }
-                                    Interlocked.Increment(ref contentCounter);
+                                //var div_con = doc.DocumentNode 
+                                //    .SelectNodes("//article")
+                                //    .ToArray();
+                                //if (div_con.Length > 0)
+                                //{
+                                //    string con = div_con[0].InnerHtml;
+                                //    lock (lockContent)
+                                //    {
+                                //        if (dicContent.ContainsKey(url) == false)
+                                //            dicContent.Add(url, con);
+                                //    }
+                                //    Interlocked.Increment(ref contentCounter);
 
-                                    f_responseToMain(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_REQUEST_LINK, Log = con });
-                                }
+                                //    f_responseToMain(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_REQUEST_LINK, Log = con });
+                                //}
 
                                 int index = listUri.IndexOf(link);
                                 if (index != -1) listUri[index].crawled = true;
@@ -299,9 +311,14 @@ namespace appel
                                     listUri.AddRange(url_new);
 
                                 var li = listUri.Where(x => x.crawled == false).Take(1).SingleOrDefault();
-                                if (li == null || contentCounter == 5)
+                                if (li == null || contentCounter == 50)
                                 {
                                     f_responseToMain(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_COMPLETE, Log = "FINISH CWRALER ..." });
+                                    lock (lockHtml)
+                                    {
+                                        using (var file = File.Create("crawler.bin"))
+                                            Serializer.Serialize<Dictionary<string, string>>(file, dicHtml);
+                                    }
                                 }
                                 else
                                 {
@@ -310,6 +327,23 @@ namespace appel
                             }
                         }
                     }, w);
+                    #endregion
+                    break;
+                case _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT:
+                    #region
+                    string path_package = (string)m.Input;
+                    if (!string.IsNullOrEmpty(path_package) && File.Exists(path_package))
+                    {
+                        using (var fileStream = File.OpenRead(path_package))
+                        {
+                            var dic = Serializer.Deserialize<Dictionary<string, string>>(fileStream);
+                            foreach (var kv in dic)
+                            {
+                                string s = kv.Value;
+
+                            }
+                        }
+                    }
                     #endregion
                     break;
             }
@@ -379,6 +413,51 @@ namespace appel
             //}, w);
 
             return s;
+        }
+
+        private static string format_HTML(string s)
+        {
+            string si = string.Empty;
+            s = Regex.Replace(s, @"<script[^>]*>[\s\S]*?</script>", string.Empty);
+            s = Regex.Replace(s, @"<style[^>]*>[\s\S]*?</style>", string.Empty);
+            s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
+            s = Regex.Replace(s, @"(?s)(?<=<!--).+?(?=-->)", string.Empty).Replace("<!---->", string.Empty);
+
+            //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
+            //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
+            s = Regex.Replace(s, @"</?(?i:embed|object|frameset|frame|iframe|meta|link)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+            HtmlDocument doc = new HtmlDocument();
+            doc.LoadHtml(s);
+            string tagName = string.Empty, tagVal = string.Empty;
+            foreach (var node in doc.DocumentNode.SelectNodes("//*"))
+            {
+                if (node.InnerText == null || node.InnerText.Trim().Length == 0)
+                {
+                    node.Remove();
+                    continue;
+                }
+
+                tagName = node.Name.ToUpper();
+                if (tagName == "A")
+                    tagVal = node.GetAttributeValue("href", string.Empty);
+                else if (tagName == "IMG")
+                    tagVal = node.GetAttributeValue("src", string.Empty);
+
+                node.Attributes.RemoveAll();
+
+                if (tagVal != string.Empty)
+                {
+                    if (tagName == "A") node.SetAttributeValue("href", tagVal);
+                    else if (tagName == "IMG") node.SetAttributeValue("src", tagVal);
+                }
+            }
+
+            si = doc.DocumentNode.OuterHtml;
+            //string[] lines = si.Split(new char[] { '\r', '\n' }, StringSplitOptions.None).Where(x => x.Trim().Length > 0).ToArray();
+            string[] lines = si.Split(new char[] { '\r', '\n' }, StringSplitOptions.None).Select(x => x.Trim()).Where(x => x.Length > 0).ToArray();
+            si = string.Join(Environment.NewLine, lines);
+            return si;
         }
     }
 
