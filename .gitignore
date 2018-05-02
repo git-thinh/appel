@@ -158,3 +158,8 @@ Kit/DLL/PdfiumViewer.dll
 Kit/DLL/PdfiumViewer.pdb
 Kit/DLL/PdfiumViewer.pdb
 Kit/DLL/nl/PdfiumViewer.resources.dll
+*.ide
+*.lock
+*.pdb
+*.dll
+*.dll

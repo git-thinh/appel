@@ -281,7 +281,7 @@ namespace appel
                                     .ToArray();
                                 if (div_con.Length > 0)
                                 {
-                                    string con = div_con[0].InnerHtml85"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"?"
+                                    string con = div_con[0].InnerHtml;
                                     lock (lockContent)
                                     {
                                         if (dicContent.ContainsKey(url) == false)
