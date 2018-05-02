@@ -174,7 +174,8 @@ namespace appel
             fmain.f_hide_label_Background(100);
 
             //postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_REGISTER_PATH, Input = "https://dictionary.cambridge.org/grammar/british-grammar/" });
-            postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT, Input = @"E:\data_el2\crawler.bin" });
+            //postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_HTML, Input = @"E:\data_el2\crawler.raw.bin" });
+            postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT, Input = @"E:\data_el2\crawler.htm.bin" });
 
             setTimeout.Delay(300, () =>
             {

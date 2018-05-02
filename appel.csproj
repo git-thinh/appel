@@ -60,6 +60,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\htmlToText.cs" />
     <Compile Include="app.cs" />
     <Compile Include="Form\fNotificationMsg.cs">
       <SubType>Form</SubType>
@@ -352,7 +353,6 @@
     <Compile Include="Kit\HtmlAgilityPack\Trace.cs" />
     <Compile Include="Kit\HtmlAgilityPack\Trace.FullFramework.cs" />
     <Compile Include="Kit\HtmlAgilityPack\Utilities.cs" />
-    <Compile Include="Kit\HtmlConvert.cs" />
     <Compile Include="Kit\Http\HttpServer.cs" />
     <Compile Include="Kit\Linq\DeepCopy.Assign.cs" />
     <Compile Include="Kit\Linq\IsNumber.cs" />

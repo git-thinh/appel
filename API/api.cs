@@ -25,6 +25,7 @@ namespace appel
         public const string CRAWLER_KEY_REGISTER_PATH = "CRAWLER_KEY_REGISTER_PATH";
         public const string CRAWLER_KEY_REQUEST_LINK = "CRAWLER_KEY_REQUEST_LINK";
         public const string CRAWLER_KEY_CONVERT_HTML_TO_TEXT = "CRAWLER_KEY_CONVERT_HTML_TO_TEXT";
+        public const string CRAWLER_KEY_CONVERT_PACKAGE_TO_HTML = "CRAWLER_KEY_CONVERT_PACKAGE_TO_HTML";
         public const string CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT = "CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT";
         public const string CRAWLER_KEY_COMPLETE = "CRAWLER_KEY_COMPLETE";
 
@@ -143,7 +144,7 @@ namespace appel
         public msg Execute(msg m)
         {
             if (m == null || m.Input == null) return m;
-            string url_input = string.Empty;
+            string url_input = string.Empty, path_package;
             HttpWebRequest w;
             HtmlDocument doc = new HtmlDocument();
             switch (m.KEY)
@@ -181,7 +182,7 @@ namespace appel
                                 if (dicHtml.ContainsKey(url) == false)
                                 {
                                     string htm_format = format_HTML(htm);
-                                    dicHtml.Add(url, htm_format); 
+                                    dicHtml.Add(url, htm_format);
                                 }
                                 url_crawled = dicHtml.Keys.ToArray();
                             }
@@ -316,7 +317,7 @@ namespace appel
                                     f_responseToMain(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_COMPLETE, Log = "FINISH CWRALER ..." });
                                     lock (lockHtml)
                                     {
-                                        using (var file = File.Create("crawler.bin"))
+                                        using (var file = File.Create("crawler.raw.bin"))
                                             Serializer.Serialize<Dictionary<string, string>>(file, dicHtml);
                                     }
                                 }
@@ -329,20 +330,72 @@ namespace appel
                     }, w);
                     #endregion
                     break;
-                case _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT:
+                case _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_HTML:
                     #region
-                    string path_package = (string)m.Input;
+                    path_package = (string)m.Input;
                     if (!string.IsNullOrEmpty(path_package) && File.Exists(path_package))
                     {
-                        using (var fileStream = File.OpenRead(path_package))
-                        {
-                            var dic = Serializer.Deserialize<Dictionary<string, string>>(fileStream);
-                            foreach (var kv in dic)
-                            {
-                                string s = kv.Value;
+                        var dicRaw = new Dictionary<string, string>();
+                        var dicCon = new Dictionary<string, string>();
+                        var list_XPath = new List<string>();
 
+                        using (var fileStream = File.OpenRead(path_package))
+                            dicRaw = Serializer.Deserialize<Dictionary<string, string>>(fileStream);
+
+                        //foreach (var kv in dicRaw)
+                        //{
+                        //    string s = kv.Value;
+                        //    doc = new HtmlDocument();
+                        //    doc.LoadHtml(s);
+                        //    foreach (var h1 in doc.DocumentNode.SelectNodes("//h1"))
+                        //    {
+                        //        //d1.Add(kv.Key, h1.ParentNode.InnerText);
+                        //        //d2.Add(kv.Key, h1.ParentNode.ParentNode.InnerText);
+                        //        //d3.Add(kv.Key, h1.ParentNode.ParentNode.ParentNode.InnerText);
+                        //        list_XPath.Add(h1.XPath);
+                        //        break;
+                        //    }
+                        //}
+
+                        foreach (var kv in dicRaw)
+                        {
+                            string s = kv.Value, si = string.Empty;
+                            doc = new HtmlDocument();
+                            doc.LoadHtml(s);
+                            var ns = doc.DocumentNode.SelectNodes("/html[1]/body[1]/div[3]/article[1]/div[1]/div[1]/div[1]/div[1]/article[1]");
+                            if (ns != null && ns.Count > 0)
+                            {
+                                si = ns[0].InnerHtml;
+                                dicCon.Add(kv.Key, si);
                             }
                         }
+
+                        using (var file = File.Create("crawler.htm.bin"))
+                            Serializer.Serialize<Dictionary<string, string>>(file, dicCon);
+
+                    }
+                    #endregion
+                    break;
+                case _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT:
+                    #region
+                    path_package = (string)m.Input;
+                    if (!string.IsNullOrEmpty(path_package) && File.Exists(path_package))
+                    {
+                        var dicRaw = new Dictionary<string, string>();
+                        var dicText = new Dictionary<string, string>();
+
+                        using (var fileStream = File.OpenRead(path_package))
+                            dicRaw = Serializer.Deserialize<Dictionary<string, string>>(fileStream);
+
+                        foreach (var kv in dicRaw)
+                        {
+                            string s = new htmlToText().ConvertHtml(kv.Value).Trim();
+                            dicText.Add(kv.Key, s);
+                        }
+
+                        using (var file = File.Create("crawler.txt.bin"))
+                            Serializer.Serialize<Dictionary<string, string>>(file, dicText);
+
                     }
                     #endregion
                     break;
