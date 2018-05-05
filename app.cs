@@ -175,9 +175,9 @@ namespace appel
 
             //postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_REGISTER_PATH, Input = "https://dictionary.cambridge.org/grammar/british-grammar/" });
             //postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_HTML, Input = @"E:\data_el2\crawler.raw.bin" });
-            postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT, Input = @"E:\data_el2\crawler.htm.bin" });
+            //postMessageToService(new msg() { API = _API.CRAWLER, KEY = _API.CRAWLER_KEY_CONVERT_PACKAGE_TO_TEXT, Input = @"E:\data_el2\crawler.htm.bin" });
 
-            setTimeout.Delay(300, () =>
+            setTimeout.Delay(300, () => 
             {
                 //fmain.crossThreadPerformSafely(() =>
                 //{
@@ -203,7 +203,7 @@ namespace appel
             });
 
             //app.notification_Show("Hi, " + app.app_name, 3000);
-        } 
+        }
     }
 
     class Program

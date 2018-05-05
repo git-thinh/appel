@@ -95,10 +95,10 @@ namespace appel
             Visible = false,
         };
 
-        FATabStripItem ui_tab_Tag = new FATabStripItem() { Title = "Tag", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "Content", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_Folder = new FATabStripItem() { Title = "Folder", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_Search = new FATabStripItem() { Title = "Find", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Tag = new FATabStripItem() { Title = "⛊", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "♥", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Folder = new FATabStripItem() { Visible = false, Title = "☘", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Search = new FATabStripItem() { Title = "⚲", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
 
 
         TreeView ui_cat_treeView;
@@ -1191,6 +1191,10 @@ namespace appel
 
         #endregion
 
+        /*////////////////////////////////////////////////////////////////////////*/
+
+        #region [ API RESPONSE ]
+
         public void f_api_word_LocalStore_responseMsg(object sender, threadMsgEventArgs e)
         {
             msg m = e.Message;
@@ -1296,5 +1300,7 @@ namespace appel
                     break;
             }
         }
+
+        #endregion
     }
 }
