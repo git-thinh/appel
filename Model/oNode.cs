@@ -17,9 +17,11 @@ namespace appel
         PPTX,
         XLS,
         XLSX,
+        HTM,
+        HTML,
         FOLDER,
-        BOOK,
-        BOOK_ARTICLE,
+        PACKAGE,
+        PACKAGE_ARTICLE,
         TAG,
     }
 
@@ -31,7 +33,7 @@ namespace appel
         public string name { set; get; }
 
         [ProtoMember(2)]
-        public string text { set; get; }
+        public string title { set; get; }
 
         string _path = string.Empty;
 
@@ -73,17 +75,14 @@ namespace appel
         public bool anylatic { set; get; }
          
         [ProtoMember(5)]
-        public bool root { set; get; }
-
-        [ProtoMember(6)]
         public oNodeType type { get; set; }
          
 
-        public string Content { get; set; }
+        public string content { get; set; }
 
         public override string ToString()
         {
-            return string.Format("{0}: {1}", type, text);
+            return string.Format("{0}: {1}; {2}", type, title, path);
         }
     } 
 }

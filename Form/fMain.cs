@@ -558,7 +558,7 @@ namespace appel
                     {
                         Checked = false,
                         Text = name,
-                        Tag = new oNode() { name = name, path = path, anylatic = false, root = true, type = oNodeType.FOLDER }
+                        Tag = new oNode() { name = name, path = path, anylatic = false, type = oNodeType.FOLDER }
                     });
                 }
             }
@@ -580,7 +580,7 @@ namespace appel
                     {
                         Checked = false,
                         Text = name,
-                        Tag = new oNode() { name = name, path = path, anylatic = false, root = false, type = oNodeType.FOLDER }
+                        Tag = new oNode() { name = name, path = path, anylatic = false, type = oNodeType.FOLDER }
                     });
                 }
             }
@@ -599,7 +599,7 @@ namespace appel
                     {
                         Checked = false,
                         Text = name,
-                        Tag = new oNode() { name = name, path = path, anylatic = false, root = true }
+                        Tag = new oNode() { name = name, path = path, anylatic = false }
                     });
                 }
             }
@@ -707,16 +707,12 @@ namespace appel
             }
         }
 
-        void f_tag_book_Binding(string[] items)
+        void f_tag_package_Binding(oNode[] items)
         {
             string name = string.Empty;
-            ui_tag_listItems.Controls.Clear();
+            //ui_tag_listItems.Controls.Clear();
             for (int i = 0; i < items.Length; i++)
             {
-                name = Path.GetFileName(items[i]);
-                if (name.Length > 4)
-                    name = name.Substring(0, name.Length - 4);
-
                 //var lbl = new Label()
                 //{
                 //    Text = name,
@@ -728,17 +724,8 @@ namespace appel
                 //    Padding = new Padding(1, 3, 1, 3),
                 //    BorderStyle = BorderStyle.None,
                 //    RightToLeft = RightToLeft.No,
-                //};
-
-                var lbl = new uiItemLabel(new oNode()
-                {
-                    name = name,
-                    path = items[i],
-                    anylatic = false,
-                    root = true,
-                    text = name,
-                    type = oNodeType.BOOK
-                },
+                //}; 
+                var lbl = new uiItemLabel(items[i],
                     IconType.ios_book_outline)
                 {
                     BackColor = Color.WhiteSmoke,
@@ -757,6 +744,42 @@ namespace appel
             }
         }
 
+        void f_tag_book_Binding(oNode[] items)
+        {
+            string name = string.Empty;
+            //ui_tag_listItems.Controls.Clear();
+            for (int i = 0; i < items.Length; i++)
+            {
+                //var lbl = new Label()
+                //{
+                //    Text = name,
+                //    AutoSize = true,
+                //    BackColor = Color.WhiteSmoke,
+                //    TextAlign = ContentAlignment.MiddleCenter,
+                //    Font = font_content_P,
+                //    Margin = new Padding(7, 5, 1, 5),
+                //    Padding = new Padding(1, 3, 1, 3),
+                //    BorderStyle = BorderStyle.None,
+                //    RightToLeft = RightToLeft.No,
+                //}; 
+                var lbl = new uiItemLabel(items[i],
+                    IconType.ios_book_outline)
+                {
+                    BackColor = Color.WhiteSmoke,
+                    Height = 22,
+                    Margin = new Padding(7, 5, 1, 5),
+                };
+
+                ui_tag_listItems.Controls.Add(lbl);
+                //lbl.MouseHover += (se, ev) => { lbl.BackColor = Color.Orange; };
+                //lbl.MouseLeave += (se, ev) => { lbl.BackColor = Color.WhiteSmoke; };
+                //lbl.Click += (se, ev) =>
+                //{
+                //    lbl.BackColor = Color.Orange;
+                //    ((fMain)this.FindForm()).f_doc_viewContent(items[i]);
+                //};
+            }
+        }
         #endregion
 
         #region [ DOCUMENT ]
@@ -795,7 +818,7 @@ namespace appel
                     oNode node = (oNode)ti.Tag;
                     switch (doc.type)
                     {
-                        case oNodeType.BOOK_ARTICLE:
+                        case oNodeType.PACKAGE_ARTICLE:
                             if (node.name == doc.name)
                             {
                                 ui_tab_Center.SelectedItem = ti;
@@ -989,7 +1012,7 @@ namespace appel
                     });
                     #endregion
                     break;
-                case oNodeType.BOOK_ARTICLE:
+                case oNodeType.PACKAGE_ARTICLE:
                     #region [ BOOK_ARTICLE ]
 
                     box_text = new Panel()
@@ -1002,7 +1025,7 @@ namespace appel
                         Visible = false,
                     };
 
-                    tit = doc.text;
+                    tit = doc.title;
                     tab = new FATabStripItem(tit, null)
                     {
                         BackColor = Color.White,
@@ -1010,7 +1033,7 @@ namespace appel
                     ui_tab_Center.AddTab(tab, true);
                     tab.Tag = doc;
 
-                    text = doc.Content;
+                    text = doc.content;
                     a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
 
                     for (int i = a.Length - 1; i > 0; i--)
@@ -1478,7 +1501,8 @@ namespace appel
                     switch (m.KEY)
                     {
                         case _API.SETTING_APP_KEY_INT:
-                            f_tag_book_Binding(api_settingApp.get_books());
+                            f_tag_package_Binding(api_settingApp.get_package());
+                            f_tag_book_Binding(api_settingApp.get_book());
                             break;
                     }
                     break;
