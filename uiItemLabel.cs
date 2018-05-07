@@ -16,33 +16,33 @@ namespace appel
         private Label _state;
         private IconButton _exit;
         private oNode _node;
-        private oNode[] items = new oNode[] { };
+        private oNode[] items = new oNode[] { }; 
+        private bool isDetailOpened = false;
 
-        FlowLayoutPanel _detail = new FlowLayoutPanel()
-        {
-            Visible = false,
-            AutoScroll = true,
-            //Dock = DockStyle.Fill,
-            BackColor = Color.White,
-            FlowDirection = FlowDirection.RightToLeft,
-            WrapContents = true,
-            Padding = new Padding(7, 0, 0, 0),
-            RightToLeft = RightToLeft.Yes,
-            BorderStyle = BorderStyle.None,
-            Margin = new Padding(0),
-        };
+        FlowLayoutPanel _detail;
 
+        int wi_text = 0, wi_header = 0;
         public uiItemLabel(oNode node, IconType iconType = IconType._none)
         {
             _node = node;
             string text = node.title;
 
-            int wi_text = 0;
-
+            _detail = new FlowLayoutPanel()
+            {
+                Visible = false,
+                AutoScroll = true,
+                //Dock = DockStyle.Fill,
+                BackColor = Color.White,
+                FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = true,
+                Padding = new Padding(7, 0, 0, 0),
+                RightToLeft = RightToLeft.Yes,
+                BorderStyle = BorderStyle.None,
+                Margin = new Padding(0),
+            };
             _exit = new IconButton() { IconType = IconType.close_circled, Visible = false };
             _text = new Label() { Text = text, AutoSize = true, TextAlign = ContentAlignment.TopLeft };
             _state = new Label() { Dock = DockStyle.Left, AutoSize = false, BackColor = Color.Orange, Width = 1 };
-
 
             using (Graphics g = CreateGraphics())
             {
@@ -55,19 +55,30 @@ namespace appel
                 _icon = new IconButton(19) { IconType = iconType, Location = new Point(3, 5), Width = 19 };
                 this.Controls.Add(_icon);
 
-                this.Width = wi_text + _icon.Width + _state.Width;
+                wi_header = wi_text + _icon.Width + _state.Width;
                 _text.Location = new Point(_icon.Width + _state.Width, 5);
             }
             else
             {
-                this.Width = wi_text + _state.Width;
+                wi_header = wi_text + _state.Width;
                 _text.Location = new Point(_state.Width, 5);
             }
+
+            this.Width = wi_header;
 
             this.Controls.AddRange(new Control[] { _text, _state, _exit, _detail });
             _text.Click += _text_Click;
             _exit.Click += _text_Click;
             this.Click += _text_Click;
+
+            this.HandleCreated += (se, ev) =>
+            { 
+                if (wi_header > this.Parent.Width)
+                {
+                    wi_header = this.Parent.Width;
+                    this.Width = wi_header;
+                }
+            };
         }
 
         private void _text_Click(object sender, EventArgs e)
@@ -76,15 +87,14 @@ namespace appel
             {
                 case oNodeType.PACKAGE:
                     #region [ PACKAGE ]
-                    if (_text.Tag == null)
+                    if (isDetailOpened)
+                        detail_Hide();
+                    else
                     {
-                        _text.Tag = true;
                         if (items.Length == 0)
                         {
                             if (File.Exists(_node.path))
                             {
-                                detail_Show();
-
                                 var dicItems = new Dictionary<string, string>();
                                 using (var fileStream = File.OpenRead(_node.path))
                                     items = Serializer.Deserialize<Dictionary<string, string>>(fileStream)
@@ -98,39 +108,39 @@ namespace appel
                                             type = oNodeType.PACKAGE_ARTICLE
                                         }).ToArray();
 
-
-                                _detail.Controls.Clear();
-                                for (int i = 0; i < items.Length; i++)
-                                {
-                                    var lbl = new Label()
-                                    {
-                                        Text = "• " + items[i].title,
-                                        AutoSize = true,
-                                        //BackColor = Color.WhiteSmoke,
-                                        TextAlign = ContentAlignment.MiddleCenter,
-                                        Margin = new Padding(7, 5, 1, 5),
-                                        Padding = new Padding(1, 3, 1, 3),
-                                        BorderStyle = BorderStyle.None,
-                                        RightToLeft = RightToLeft.No,
-                                        Tag = items[i],
-                                    };
-                                    lbl.Click += (se, ev) =>
-                                    {
-                                        lbl.BackColor = Color.Orange;
-                                        ((fMain)this.FindForm()).f_doc_viewContent((oNode)((Label)se).Tag);
-                                    };
-                                    _detail.Controls.Add(lbl);
-                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        detail_Hide();
+                        if (items.Length > 0)
+                        {
+                            detail_Show();
+                            _detail.Controls.Clear();
+                            for (int i = 0; i < items.Length; i++)
+                            {
+                                var lbl = new Label()
+                                {
+                                    Text = "• " + items[i].title,
+                                    AutoSize = true,
+                                    //BackColor = Color.WhiteSmoke,
+                                    TextAlign = ContentAlignment.MiddleCenter,
+                                    Margin = new Padding(7, 5, 1, 5),
+                                    Padding = new Padding(1, 3, 1, 3),
+                                    BorderStyle = BorderStyle.None,
+                                    RightToLeft = RightToLeft.No,
+                                    Tag = items[i],
+                                };
+                                lbl.Click += (se, ev) =>
+                                {
+                                    lbl.BackColor = Color.Orange;
+                                    ((fMain)this.FindForm()).f_doc_viewContent((oNode)((Label)se).Tag);
+                                };
+                                _detail.Controls.Add(lbl);
+                            }
+                        }
                     }
                     #endregion
                     break;
                 default:
+                    this.BackColor = Color.Orange;
                     ((fMain)this.FindForm()).f_doc_viewContent(_node);
                     break;
             }
@@ -138,6 +148,8 @@ namespace appel
 
         void detail_Show()
         {
+            isDetailOpened = true;
+
             foreach (Control ci in this.Parent.Controls)
                 ci.Visible = false;
 
@@ -167,7 +179,7 @@ namespace appel
 
         void detail_Hide()
         {
-            if (this.Tag == null) return;
+            isDetailOpened = false;
 
             foreach (Control ci in this.Parent.Controls)
                 ci.Visible = true;
@@ -185,8 +197,7 @@ namespace appel
                 this.Width = _text.Width + _state.Width;
             }
 
-            this.Height = 24;
-            _text.Tag = null;
+            this.Height = 24; 
         }// end
 
     }
