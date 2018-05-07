@@ -50,18 +50,18 @@ namespace appel
         public oAppSize app_size { set; get; }
 
         [ProtoMember(3)]
-        public oNode node_opening { get; set; }
+        public long node_opening { get; set; }
 
-        public List<oNode> list_package { set; get; }
-        public List<oNode> list_book { set; get; }
+        public List<long> list_package { set; get; }
+        public List<long> list_book { set; get; }
 
         public oSetting()
         {
             list_folder = new List<string>();
-            list_package = new List<oNode>();
-            list_book = new List<oNode>();
+            list_package = new List<long>();
+            list_book = new List<long>();
             app_size = new oAppSize();
-            node_opening = new oNode();
+            node_opening = 0;
         }
     }
 }

@@ -24,20 +24,21 @@ namespace appel
         PACKAGE_ARTICLE,
         TAG,
     }
-
-
+    
     [ProtoContract]
     public class oNode
     {
         [ProtoMember(1)]
-        public string name { set; get; }
+        public long id { set; get; }
 
         [ProtoMember(2)]
+        public string name { set; get; }
+
+        [ProtoMember(3)]
         public string title { set; get; }
 
         string _path = string.Empty;
-
-        [ProtoMember(3)]
+        [ProtoMember(4)]
         public string path
         {
             set
@@ -71,18 +72,22 @@ namespace appel
             }
         }
 
-        [ProtoMember(4)]
-        public bool anylatic { set; get; }
-         
         [ProtoMember(5)]
+        public bool anylatic { set; get; }
+
+        [ProtoMember(6)]
         public oNodeType type { get; set; }
-         
 
         public string content { get; set; }
+
+        public oNode()
+        {
+            id = long.Parse(DateTime.Now.AddMilliseconds(new Random().Next(999)).ToString("yyMMddHHmmssfff"));
+        }
 
         public override string ToString()
         {
             return string.Format("{0}: {1}; {2}", type, title, path);
         }
-    } 
+    }
 }

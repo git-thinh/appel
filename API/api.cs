@@ -93,6 +93,46 @@ namespace appel
         }
     }
 
+    public class api_nodeStore : api_base, IAPI
+    {
+        static readonly object _lock = new object();
+        static Dictionary<long, oNode> dicItems = new Dictionary<long, oNode>();
+
+        public static void Add(oNode node)
+        {
+            lock (_lock)
+                dicItems.Add(node.id, node);
+        }
+        public static void Adds(oNode[] nodes)
+        {
+            lock (_lock)
+            {
+                for (int i = 0; i < nodes.Length; i++)
+                    if (!dicItems.ContainsKey(nodes[i].id))
+                        dicItems.Add(nodes[i].id, nodes[i]);
+            }
+        }
+
+        public static oNode Get(long id)
+        {
+            lock (_lock)
+                if (dicItems.ContainsKey(id))
+                    return dicItems[id];
+            return null;
+        }
+
+        public msg Execute(msg msg)
+        {
+            return msg;
+        }
+
+        public void Close()
+        {
+            throw new NotImplementedException();
+        }
+
+    }
+
     public class api_fetch : api_base, IAPI
     {
         static readonly object _lock = new object();
@@ -538,8 +578,10 @@ namespace appel
                         _setting = Serializer.Deserialize<oSetting>(file);
                         string path_pkg = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "package");
                         if (Directory.Exists(path_pkg))
-                            _setting.list_package = Directory.GetFiles(path_pkg, "*.pkg")
-                                .Select(x=>new oNode() {
+                        {
+                            var ns = Directory.GetFiles(path_pkg, "*.pkg")
+                                .Select(x => new oNode()
+                                {
                                     anylatic = false,
                                     name = Path.GetFileName(x).Substring(0, Path.GetFileName(x).Length - 4),
                                     content = string.Empty,
@@ -547,15 +589,20 @@ namespace appel
                                     title = Path.GetFileName(x).Substring(0, Path.GetFileName(x).Length - 4),
                                     type = oNodeType.PACKAGE,
                                 })
-                                .ToList();
+                                .ToArray();
+                            api_nodeStore.Adds(ns);
+                            _setting.list_package = ns.Select(x => x.id).ToList();
+                        }
+
                         string path_book = Path.Combine(System.IO.Directory.GetCurrentDirectory(), "book");
                         if (Directory.Exists(path_book))
                         {
-                            _setting.list_book =
-                                //Directory.GetFiles(path, "*.txt, *.html")
-                                "*.txt|*.pdf|*.html|*.htm|*.doc|*.docx|*.xls|*.xlsx|*.ppt|*.pptx".Split('|')
-                                .SelectMany(filter => System.IO.Directory.GetFiles(path_book, filter))
-                                .Select(x => node_Parse(x)).Where(x => x != null).ToList();
+                            //Directory.GetFiles(path, "*.txt, *.html")
+                            var ps = "*.txt|*.pdf|*.html|*.htm|*.doc|*.docx|*.xls|*.xlsx|*.ppt|*.pptx".Split('|')
+                             .SelectMany(filter => System.IO.Directory.GetFiles(path_book, filter))
+                             .Select(x => node_Parse(x)).Where(x => x != null).ToArray();
+                            api_nodeStore.Adds(ps);
+                            _setting.list_book = ps.Select(x => x.id).ToList();
                         }
 
                         _setting.list_folder = new List<string>() { @"E:\data_el2\articles-IT\w2ui" };
