@@ -18,6 +18,9 @@ namespace appel
         XLS,
         XLSX,
         FOLDER,
+        BOOK,
+        BOOK_ARTICLE,
+        TAG,
     }
 
 
@@ -74,5 +77,13 @@ namespace appel
 
         [ProtoMember(6)]
         public oNodeType type { get; set; }
+         
+
+        public string Content { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("{0}: {1}", type, text);
+        }
     } 
 }

@@ -2,6 +2,8 @@
 {
     public enum IconType
     {
+        _none = 0x0,
+
         alert = 0xf101,
 
         alert_circled = 0xf100,

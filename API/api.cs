@@ -10,13 +10,14 @@ using System.Net;
 using HtmlAgilityPack;
 using System.Net.Sockets;
 using System.Web;
-using System.Threading;
+using System.Threading; 
 
 namespace appel
 {
     public class _API
     {
         public const string SETTING_APP = "SETTING_APP";
+        public const string SETTING_APP_KEY_INT = "SETTING_APP_KEY_INT";
         public const string SETTING_APP_KEY_UPDATE_FOLDER = "SETTING_APP_KEY_UPDATE_FOLDER";
         public const string SETTING_APP_KEY_UPDATE_SIZE = "SETTING_APP_KEY_UPDATE_SIZE";
         public const string SETTING_APP_KEY_UPDATE_NODE_OPENING = "SETTING_APP_KEY_UPDATE_NODE_OPENING";
@@ -45,6 +46,7 @@ namespace appel
     public interface IMAIN
     {
         void api_responseMsg(msg m);
+        void api_initMsg(msg m);
     }
 
     public interface IAPI
@@ -83,6 +85,11 @@ namespace appel
         public void f_responseToMain(msg m)
         {
             lock (_lock) cache.Enqueue(m);
+        }
+
+        public void f_api_Inited(msg m)
+        {
+            if (main != null) main.api_initMsg(m);
         }
     }
 
@@ -529,10 +536,18 @@ namespace appel
                     using (var file = File.OpenRead(file_name))
                     {
                         _setting = Serializer.Deserialize<oSetting>(file);
+                        _setting.list_book = Directory.GetFiles(System.IO.Directory.GetCurrentDirectory(), "*.con").ToList();
                         _setting.list_folder = new List<string>() { @"E:\data_el2\articles-IT\w2ui" };
+                        f_api_Inited(new msg() { API = _API.SETTING_APP, KEY = _API.SETTING_APP_KEY_INT });
                     }
                 }
             }
+        }
+
+        public static string[] get_books()
+        {
+            lock (_lock)
+                return _setting.list_book.ToArray();
         }
 
         public static bool get_checkExistFolder(string fol)

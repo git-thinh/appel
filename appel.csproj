@@ -449,6 +449,9 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Model\oNode.cs" />
+    <Compile Include="uiItemLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="_CONST.cs" />
     <Compile Include="_NOTE.cs" />
   </ItemGroup>

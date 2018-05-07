@@ -95,8 +95,8 @@ namespace appel
             Visible = false,
         };
 
-        FATabStripItem ui_tab_Tag = new FATabStripItem() { Title = "⛊", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "♥", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Tag = new FATabStripItem() { Title = "Tag", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "Content", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Folder = new FATabStripItem() { Visible = false, Title = "☘", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Search = new FATabStripItem() { Title = "⚲", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
 
@@ -695,7 +695,7 @@ namespace appel
                     Margin = new Padding(7, 5, 1, 5),
                     Padding = new Padding(1, 3, 1, 3),
                     BorderStyle = BorderStyle.None,
-                    RightToLeft = System.Windows.Forms.RightToLeft.No,
+                    RightToLeft = RightToLeft.No,
                 };
                 ui_tag_listItems.Controls.Add(lbl);
                 lbl.MouseHover += (se, ev) => { lbl.BackColor = Color.Orange; };
@@ -704,6 +704,47 @@ namespace appel
                 {
                     lbl.BackColor = Color.Orange;
                 };
+            }
+        }
+
+        void f_tag_book_Binding(string[] items) {
+            string name = string.Empty;
+            ui_tag_listItems.Controls.Clear();
+            for (int i = 0; i < items.Length; i++)
+            {
+                name = Path.GetFileName(items[i]);
+                if(name.Length > 4)
+                    name = name.Substring(0, name.Length - 4);
+
+                //var lbl = new Label()
+                //{
+                //    Text = name,
+                //    AutoSize = true,
+                //    BackColor = Color.WhiteSmoke,
+                //    TextAlign = ContentAlignment.MiddleCenter,
+                //    Font = font_content_P,
+                //    Margin = new Padding(7, 5, 1, 5),
+                //    Padding = new Padding(1, 3, 1, 3),
+                //    BorderStyle = BorderStyle.None,
+                //    RightToLeft = RightToLeft.No,
+                //};
+
+                var lbl = new uiItemLabel(new oNode() { name = name, path = items[i], anylatic = false, root = true, text = name,
+                    type = oNodeType.BOOK }, 
+                    IconType.ios_book_outline) {
+                    BackColor = Color.WhiteSmoke,
+                    Height = 22,
+                    Margin = new Padding(7, 5, 1, 5),
+                };
+
+                ui_tag_listItems.Controls.Add(lbl);
+                //lbl.MouseHover += (se, ev) => { lbl.BackColor = Color.Orange; };
+                //lbl.MouseLeave += (se, ev) => { lbl.BackColor = Color.WhiteSmoke; };
+                //lbl.Click += (se, ev) =>
+                //{
+                //    lbl.BackColor = Color.Orange;
+                //    ((fMain)this.FindForm()).f_doc_viewContent(items[i]);
+                //};
             }
         }
 
@@ -823,6 +864,7 @@ namespace appel
                     #endregion
                     break;
                 case oNodeType.TEXT:
+                case oNodeType.BOOK_ARTICLE:
                     #region [ TEXT ]
 
                     box_text = new Panel()
@@ -844,8 +886,16 @@ namespace appel
                     ui_tab_Center.AddTab(tab, true);
                     tab.Tag = doc;
 
-                    text = File.ReadAllText(doc.path);
-                    a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+                    switch (doc.type) {
+                        case oNodeType.TEXT:
+                            text = File.ReadAllText(doc.path);
+                            a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+                            break;
+                        case oNodeType.BOOK_ARTICLE:
+                            text = doc.Content;
+                            a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+                            break;
+                    }
 
                     string si;
                     GrowLabel growLabel = null;
@@ -1301,6 +1351,21 @@ namespace appel
             }
         }
 
+        public void api_initMsg(msg m)
+        {
+            if (m == null || m.Output == null) return;
+            string s = string.Empty;
+
+            switch (m.API) {
+                case _API.SETTING_APP:
+                    switch (m.KEY) {
+                        case _API.SETTING_APP_KEY_INT:
+                            f_tag_book_Binding(api_settingApp.get_books());
+                            break;
+                    }
+                    break;
+            }
+        }
         #endregion
     }
 }
