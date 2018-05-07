@@ -14,7 +14,7 @@ using System.Threading;
 
 namespace appel
 {
-    public class fMain : Form, IMAIN
+    public class fMain : Form, IFORM
     {
         const bool allow_hookMouseWheel = false;
 
@@ -707,13 +707,14 @@ namespace appel
             }
         }
 
-        void f_tag_book_Binding(string[] items) {
+        void f_tag_book_Binding(string[] items)
+        {
             string name = string.Empty;
             ui_tag_listItems.Controls.Clear();
             for (int i = 0; i < items.Length; i++)
             {
                 name = Path.GetFileName(items[i]);
-                if(name.Length > 4)
+                if (name.Length > 4)
                     name = name.Substring(0, name.Length - 4);
 
                 //var lbl = new Label()
@@ -729,9 +730,17 @@ namespace appel
                 //    RightToLeft = RightToLeft.No,
                 //};
 
-                var lbl = new uiItemLabel(new oNode() { name = name, path = items[i], anylatic = false, root = true, text = name,
-                    type = oNodeType.BOOK }, 
-                    IconType.ios_book_outline) {
+                var lbl = new uiItemLabel(new oNode()
+                {
+                    name = name,
+                    path = items[i],
+                    anylatic = false,
+                    root = true,
+                    text = name,
+                    type = oNodeType.BOOK
+                },
+                    IconType.ios_book_outline)
+                {
                     BackColor = Color.WhiteSmoke,
                     Height = 22,
                     Margin = new Padding(7, 5, 1, 5),
@@ -784,11 +793,24 @@ namespace appel
                 if (ti.Tag != null)
                 {
                     oNode node = (oNode)ti.Tag;
-                    if (node.path == doc.path)
+                    switch (doc.type)
                     {
-                        ui_tab_Center.SelectedItem = ti;
-                        document_Opening = doc;
-                        return;
+                        case oNodeType.BOOK_ARTICLE:
+                            if (node.name == doc.name)
+                            {
+                                ui_tab_Center.SelectedItem = ti;
+                                document_Opening = doc;
+                                return;
+                            }
+                            break;
+                        default:
+                            if (node.path == doc.path)
+                            {
+                                ui_tab_Center.SelectedItem = ti;
+                                document_Opening = doc;
+                                return;
+                            }
+                            break;
                     }
                 }
             }
@@ -803,6 +825,8 @@ namespace appel
             if (tit.Length > 20) tit = tit.Substring(0, 18) + "...";
             string[] a = new string[] { };
             string text = string.Empty;
+            string si;
+            GrowLabel growLabel = null;
 
             switch (doc.type)
             {
@@ -864,7 +888,6 @@ namespace appel
                     #endregion
                     break;
                 case oNodeType.TEXT:
-                case oNodeType.BOOK_ARTICLE:
                     #region [ TEXT ]
 
                     box_text = new Panel()
@@ -886,19 +909,110 @@ namespace appel
                     ui_tab_Center.AddTab(tab, true);
                     tab.Tag = doc;
 
-                    switch (doc.type) {
-                        case oNodeType.TEXT:
-                            text = File.ReadAllText(doc.path);
-                            a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
-                            break;
-                        case oNodeType.BOOK_ARTICLE:
-                            text = doc.Content;
-                            a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
-                            break;
+                    text = File.ReadAllText(doc.path);
+                    a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+
+                    for (int i = a.Length - 1; i > 0; i--)
+                    {
+                        si = a[i];
+                        if (si.Length == 0) continue;
+
+                        switch (si[0])
+                        {
+                            case '■':
+                                growLabel = new GrowLabel()
+                                {
+                                    Text = si,
+                                    Font = font_content_H3,
+                                    Dock = DockStyle.Top
+                                };
+                                break;
+                            //case '¦':
+                            //    break;
+                            //case '⌐': // begin UL_OL 
+                            //    break;
+                            //case '•': // LI 
+                            //    break;
+                            //case '□': // LI LI 
+                            //    break;
+                            //case '▫': // LI LI LI 
+                            //    break;
+                            //case '┘': // end UL_OL 
+                            //    break;
+                            default:
+                                growLabel = new GrowLabel()
+                                {
+                                    Text = si,
+                                    Font = font_content_P,
+                                    Dock = DockStyle.Top
+                                };
+                                break;
+                        }
+
+                        //box_text.Controls.AddRange(new Control[]{  
+                        //    new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
+                        //    growLabel
+                        //});
+                        box_text.Controls.AddRange(new Control[]{
+                            new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
+                            growLabel
+                        });
                     }
 
-                    string si;
-                    GrowLabel growLabel = null;
+                    box_text.Controls.AddRange(new Control[]{
+                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
+                            new GrowLabel() {
+                                    Text = a[0],
+                                    Font = font_content_H1,
+                                    Dock = DockStyle.Top,
+                                    TextAlign = ContentAlignment.MiddleCenter,
+                                },
+                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
+                        });
+
+                    tab.Controls.Add(box_text);
+
+                    #endregion
+                    #region [ TOOLBAR ]
+                    toolbar = new Panel()
+                    {
+                        Dock = DockStyle.Bottom,
+                        Height = 27,
+                        BackColor = _CONST.TAB_ACTIVE_TOOLBAR_BACKGROUND,
+                    };
+                    tab.Controls.AddRange(new Control[]{
+                            toolbar,
+                            //new Label(){ AutoSize = false, Dock = DockStyle.Top, BackColor = Color.Gray, Height = 1 },
+                            new Label(){ AutoSize = false, Dock = DockStyle.Left, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
+                            new Label(){ AutoSize = false, Dock = DockStyle.Right, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
+                            new Label(){ AutoSize = false, Dock = DockStyle.Bottom, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Height = 1 },
+                    });
+                    #endregion
+                    break;
+                case oNodeType.BOOK_ARTICLE:
+                    #region [ BOOK_ARTICLE ]
+
+                    box_text = new Panel()
+                    {
+                        Dock = DockStyle.Fill,
+                        Padding = new Padding(15, 0, 0, 0),
+                        BackColor = Color.White,
+                        AutoScroll = true,
+                        Name = doc.path,
+                        Visible = false,
+                    };
+
+                    tit = doc.text;
+                    tab = new FATabStripItem(tit, null)
+                    {
+                        BackColor = Color.White,
+                    };
+                    ui_tab_Center.AddTab(tab, true);
+                    tab.Tag = doc;
+
+                    text = doc.Content;
+                    a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+
                     for (int i = a.Length - 1; i > 0; i--)
                     {
                         si = a[i];
@@ -1330,17 +1444,19 @@ namespace appel
             if (m == null || m.Output == null) return;
             string s = string.Empty;
 
-            switch (m.API) {
+            switch (m.API)
+            {
                 case _API.CRAWLER:
-                    switch (m.KEY) {
+                    switch (m.KEY)
+                    {
                         case _API.CRAWLER_KEY_REQUEST_LINK:
                             oLink link = (oLink)m.Input;
                             ui_log_Text.crossThreadPerformSafely(() =>
                             {
-                                ui_log_Text.Text +=  Environment.NewLine + m.Log + Environment.NewLine;
+                                ui_log_Text.Text += Environment.NewLine + m.Log + Environment.NewLine;
                             });
                             break;
-                        case _API.CRAWLER_KEY_COMPLETE: 
+                        case _API.CRAWLER_KEY_COMPLETE:
                             ui_log_Text.crossThreadPerformSafely(() =>
                             {
                                 ui_log_Text.Text += Environment.NewLine + m.Log + Environment.NewLine;
@@ -1356,9 +1472,11 @@ namespace appel
             if (m == null || m.Output == null) return;
             string s = string.Empty;
 
-            switch (m.API) {
+            switch (m.API)
+            {
                 case _API.SETTING_APP:
-                    switch (m.KEY) {
+                    switch (m.KEY)
+                    {
                         case _API.SETTING_APP_KEY_INT:
                             f_tag_book_Binding(api_settingApp.get_books());
                             break;

@@ -43,7 +43,7 @@ namespace appel
         public const string WORD_DOWNLOAD = "WORD_DOWNLOAD";
     }
 
-    public interface IMAIN
+    public interface IFORM
     {
         void api_responseMsg(msg m);
         void api_initMsg(msg m);
@@ -60,12 +60,12 @@ namespace appel
         static readonly object _lock = new object();
         static Queue<msg> cache = new Queue<msg>();
         static System.Threading.Timer timer = null;
-        static IMAIN main = null;
+        static IFORM fom = null;
 
         public api_base()
         {
-            if (main == null)
-                main = app.get_Main();
+            if (fom == null)
+                fom = app.get_Main();
             if (timer == null)
             {
                 timer = new System.Threading.Timer(new System.Threading.TimerCallback((obj) =>
@@ -75,10 +75,10 @@ namespace appel
                         if (cache.Count > 0)
                         {
                             msg m = cache.Dequeue();
-                            if (main != null) main.api_responseMsg(m);
+                            if (fom != null) fom.api_responseMsg(m);
                         }
                     }
-                }), main, 100, 100);
+                }), fom, 100, 100);
             }
         }
 
@@ -89,7 +89,7 @@ namespace appel
 
         public void f_api_Inited(msg m)
         {
-            if (main != null) main.api_initMsg(m);
+            if (fom != null) fom.api_initMsg(m);
         }
     }
 

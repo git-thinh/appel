@@ -67,7 +67,7 @@ namespace appel
 
         #region [ APP ]
 
-        public static IMAIN get_Main() {
+        public static IFORM get_Main() {
             return fmain;
         }
 
