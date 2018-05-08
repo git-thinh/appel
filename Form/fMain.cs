@@ -707,12 +707,14 @@ namespace appel
             }
         }
 
-        void f_tag_package_Binding(oNode[] items)
+        void f_tag_package_Binding(long[] items)
         {
             string name = string.Empty;
             //ui_tag_listItems.Controls.Clear();
             for (int i = 0; i < items.Length; i++)
             {
+                oNode node = api_nodeStore.Get(items[i]);
+
                 //var lbl = new Label()
                 //{
                 //    Text = name,
@@ -725,7 +727,7 @@ namespace appel
                 //    BorderStyle = BorderStyle.None,
                 //    RightToLeft = RightToLeft.No,
                 //}; 
-                var lbl = new uiItemLabel(items[i],
+                var lbl = new uiItemLabel(node,
                     IconType.ios_book_outline)
                 {
                     BackColor = Color.WhiteSmoke,
@@ -744,12 +746,13 @@ namespace appel
             }
         }
 
-        void f_tag_book_Binding(oNode[] items)
+        void f_tag_book_Binding(long[] items)
         {
             string name = string.Empty;
             //ui_tag_listItems.Controls.Clear();
             for (int i = 0; i < items.Length; i++)
             {
+                oNode node = api_nodeStore.Get(items[i]);
                 //var lbl = new Label()
                 //{
                 //    Text = name,
@@ -762,7 +765,7 @@ namespace appel
                 //    BorderStyle = BorderStyle.None,
                 //    RightToLeft = RightToLeft.No,
                 //}; 
-                var lbl = new uiItemLabel(items[i],
+                var lbl = new uiItemLabel(node,
                     IconType.ios_book_outline)
                 {
                     BackColor = Color.WhiteSmoke,

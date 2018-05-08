@@ -671,13 +671,13 @@ namespace appel
             return node;
         }
 
-        public static oNode[] get_package()
+        public static long[] get_package()
         {
             lock (_lock)
                 return _setting.list_package.ToArray();
         }
 
-        public static oNode[] get_book()
+        public static long[] get_book()
         {
             lock (_lock)
                 return _setting.list_book.ToArray();
@@ -698,7 +698,7 @@ namespace appel
         public static oNode get_nodeOpening()
         {
             lock (_lock)
-                return _setting.node_opening;
+                return api_nodeStore.Get(_setting.node_opening);
         }
 
         public msg Execute(msg m)
@@ -729,7 +729,7 @@ namespace appel
                 case _API.SETTING_APP_KEY_UPDATE_NODE_OPENING:
                     oNode node = (oNode)m.Input;
                     lock (_lock)
-                        _setting.node_opening = node;
+                        _setting.node_opening = node.id;
                     hasUpdate = true;
                     break;
                 case _API.SETTING_APP_KEY_UPDATE_SIZE:

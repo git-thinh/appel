@@ -80,9 +80,11 @@ namespace appel
 
         public string content { get; set; }
 
+        private static readonly Random getrandom = new Random();
         public oNode()
         {
-            id = long.Parse(DateTime.Now.AddMilliseconds(new Random().Next(999)).ToString("yyMMddHHmmssfff"));
+            lock (getrandom) // synchronize
+                id = long.Parse(DateTime.Now.AddMilliseconds(getrandom.Next(0, 999)).ToString("yyMMddHHmmssfff"));
         }
 
         public override string ToString()
