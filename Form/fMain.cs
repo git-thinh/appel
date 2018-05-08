@@ -10,7 +10,7 @@ using FarsiLibrary.Win;
 using System.Diagnostics;
 using Gma.System.MouseKeyHook;
 using PdfiumViewer;
-using System.Threading;
+using System.Threading; 
 
 namespace appel
 {
@@ -28,9 +28,9 @@ namespace appel
         const int width_tab_Left = 269;
         const int width_tab_Right = 369;
 
-        static readonly Font font_content_H1 = new Font("Arial", 17, FontStyle.Bold);
-        static readonly Font font_content_H3 = new Font("Arial", 15, FontStyle.Bold);
-        static readonly Font font_content_P = new Font("Arial", 12, FontStyle.Regular);
+        static readonly System.Drawing.Font font_content_H1 = new System.Drawing.Font("Arial", 17, FontStyle.Bold);
+        static readonly System.Drawing.Font font_content_H3 = new System.Drawing.Font("Arial", 15, FontStyle.Bold);
+        static readonly System.Drawing.Font font_content_P = new System.Drawing.Font("Arial", 12, FontStyle.Regular);
 
         #endregion
 
@@ -114,7 +114,7 @@ namespace appel
             WrapContents = true,
             Padding = new Padding(7, 0, 0, 0),
             RightToLeft = RightToLeft.Yes,
-            BorderStyle = BorderStyle.None,
+            BorderStyle = System.Windows.Forms.BorderStyle.None,
             Margin = new Padding(0),
         };
         FlowLayoutPanel ui_content_listItems = new FlowLayoutPanel()
@@ -126,7 +126,7 @@ namespace appel
             WrapContents = true,
             Padding = new Padding(0),
             RightToLeft = RightToLeft.Yes,
-            BorderStyle = BorderStyle.None,
+            BorderStyle = System.Windows.Forms.BorderStyle.None,
             Margin = new Padding(0),
         };
         FlowLayoutPanel ui_find_listItems = new FlowLayoutPanel()
@@ -138,7 +138,7 @@ namespace appel
             WrapContents = true,
             Padding = new Padding(0),
             RightToLeft = RightToLeft.Yes,
-            BorderStyle = BorderStyle.None,
+            BorderStyle = System.Windows.Forms.BorderStyle.None,
             Margin = new Padding(0),
         };
 
@@ -201,7 +201,7 @@ namespace appel
             WrapContents = true,
             Padding = new Padding(0, 0, 17, 0),
             RightToLeft = RightToLeft.No,
-            BorderStyle = BorderStyle.None,
+            BorderStyle = System.Windows.Forms.BorderStyle.None,
             Margin = new Padding(0),
         };
 
@@ -215,7 +215,7 @@ namespace appel
             WrapContents = true,
             Padding = new Padding(0, 0, 17, 0),
             RightToLeft = RightToLeft.No,
-            BorderStyle = BorderStyle.None,
+            BorderStyle = System.Windows.Forms.BorderStyle.None,
             Margin = new Padding(0),
         };
 
@@ -329,7 +329,7 @@ namespace appel
 
         void f_log_init_UI()
         {
-            ui_log_Text = new TextBox() { Dock = DockStyle.Fill, ScrollBars = ScrollBars.Both, BorderStyle = BorderStyle.None, Multiline = true };
+            ui_log_Text = new TextBox() { Dock = DockStyle.Fill, ScrollBars = ScrollBars.Both, BorderStyle = System.Windows.Forms.BorderStyle.None, Multiline = true };
             Panel box = new Panel() { Dock = DockStyle.Top, Height = 32, BackColor = Color.White };
             ui_log_Tab.Controls.AddRange(new Control[] { ui_log_Text, box });
 
@@ -511,8 +511,8 @@ namespace appel
 
         void f_cat_treeView_Init()
         {
-            //ui_cat_treeView = new NoHScrollTree() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.None };
-            ui_cat_treeView = new TreeView() { Dock = DockStyle.Fill, BorderStyle = BorderStyle.None, BackColor = _CONST.TAB_ACTIVE_TOOLBAR_BACKGROUND };
+            //ui_cat_treeView = new NoHScrollTree() { Dock = DockStyle.Fill, BorderStyle = System.Windows.Forms.BorderStyle.None };
+            ui_cat_treeView = new TreeView() { Dock = DockStyle.Fill, BorderStyle = System.Windows.Forms.BorderStyle.None, BackColor = _CONST.TAB_ACTIVE_TOOLBAR_BACKGROUND };
 
 
             ui_cat_treeView.NodeMouseClick += f_cat_treeView_NodeMouseClick;
@@ -632,7 +632,7 @@ namespace appel
 
             var txt_search = new TextBox()
             {
-                BorderStyle = BorderStyle.FixedSingle,
+                BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle,
                 Width = 99,
                 Dock = DockStyle.None,
                 Anchor = AnchorStyles.Right,
@@ -694,7 +694,7 @@ namespace appel
                     Font = font_content_P,
                     Margin = new Padding(7, 5, 1, 5),
                     Padding = new Padding(1, 3, 1, 3),
-                    BorderStyle = BorderStyle.None,
+                    BorderStyle = System.Windows.Forms.BorderStyle.None,
                     RightToLeft = RightToLeft.No,
                 };
                 ui_tag_listItems.Controls.Add(lbl);
@@ -724,7 +724,7 @@ namespace appel
                 //    Font = font_content_P,
                 //    Margin = new Padding(7, 5, 1, 5),
                 //    Padding = new Padding(1, 3, 1, 3),
-                //    BorderStyle = BorderStyle.None,
+                //    BorderStyle = System.Windows.Forms.BorderStyle.None,
                 //    RightToLeft = RightToLeft.No,
                 //}; 
                 var lbl = new uiItemLabel(node,
@@ -762,7 +762,7 @@ namespace appel
                 //    Font = font_content_P,
                 //    Margin = new Padding(7, 5, 1, 5),
                 //    Padding = new Padding(1, 3, 1, 3),
-                //    BorderStyle = BorderStyle.None,
+                //    BorderStyle = System.Windows.Forms.BorderStyle.None,
                 //    RightToLeft = RightToLeft.No,
                 //}; 
                 var lbl = new uiItemLabel(node,
@@ -854,6 +854,9 @@ namespace appel
             string si;
             GrowLabel growLabel = null;
 
+            Cursor = Cursors.WaitCursor;
+            ui_tab_Left.Enabled = false;
+
             switch (doc.type)
             {
                 case oNodeType.PDF:
@@ -866,8 +869,8 @@ namespace appel
                         Document = null,
                         BackColor = Color.White,
                         ZoomMode = PdfViewerZoomMode.FitWidth,
-                        BorderStyle = BorderStyle.None,
-                        ShowBookmarks = true,
+                        BorderStyle = System.Windows.Forms.BorderStyle.None,
+                        ShowBookmarks = false,
                         Margin = new Padding(0),
                         Padding = new Padding(0),
                         Visible = false,
@@ -937,6 +940,122 @@ namespace appel
 
                     text = File.ReadAllText(doc.path);
                     a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+
+                    for (int i = a.Length - 1; i > 0; i--)
+                    {
+                        si = a[i];
+                        if (si.Length == 0) continue;
+
+                        switch (si[0])
+                        {
+                            case '■':
+                                growLabel = new GrowLabel()
+                                {
+                                    Text = si,
+                                    Font = font_content_H3,
+                                    Dock = DockStyle.Top
+                                };
+                                break;
+                            //case '¦':
+                            //    break;
+                            //case '⌐': // begin UL_OL 
+                            //    break;
+                            //case '•': // LI 
+                            //    break;
+                            //case '□': // LI LI 
+                            //    break;
+                            //case '▫': // LI LI LI 
+                            //    break;
+                            //case '┘': // end UL_OL 
+                            //    break;
+                            default:
+                                growLabel = new GrowLabel()
+                                {
+                                    Text = si,
+                                    Font = font_content_P,
+                                    Dock = DockStyle.Top
+                                };
+                                break;
+                        }
+
+                        //box_text.Controls.AddRange(new Control[]{  
+                        //    new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
+                        //    growLabel
+                        //});
+                        box_text.Controls.AddRange(new Control[]{
+                            new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
+                            growLabel
+                        });
+                    }
+
+                    box_text.Controls.AddRange(new Control[]{
+                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
+                            new GrowLabel() {
+                                    Text = a[0],
+                                    Font = font_content_H1,
+                                    Dock = DockStyle.Top,
+                                    TextAlign = ContentAlignment.MiddleCenter,
+                                },
+                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
+                        });
+
+                    tab.Controls.Add(box_text);
+
+                    #endregion
+                    #region [ TOOLBAR ]
+                    toolbar = new Panel()
+                    {
+                        Dock = DockStyle.Bottom,
+                        Height = 27,
+                        BackColor = _CONST.TAB_ACTIVE_TOOLBAR_BACKGROUND,
+                    };
+                    tab.Controls.AddRange(new Control[]{
+                            toolbar,
+                            //new Label(){ AutoSize = false, Dock = DockStyle.Top, BackColor = Color.Gray, Height = 1 },
+                            new Label(){ AutoSize = false, Dock = DockStyle.Left, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
+                            new Label(){ AutoSize = false, Dock = DockStyle.Right, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Width = 1 },
+                            new Label(){ AutoSize = false, Dock = DockStyle.Bottom, BackColor = _CONST.TAB_ACTIVE_BORDER_COLOR, Height = 1 },
+                    });
+                    #endregion
+                    break;
+                case oNodeType.DOCX:
+                    #region [ DOCX ]
+
+                    box_text = new Panel()
+                    {
+                        Dock = DockStyle.Fill,
+                        Padding = new Padding(15, 0, 0, 0),
+                        BackColor = Color.White,
+                        AutoScroll = true,
+                        Name = doc.path,
+                        Visible = false,
+                    };
+
+                    tab = new FATabStripItem(tit, null)
+                    {
+                        //Padding = new Padding(15, 0, 0, 0),
+                        BackColor = Color.White,
+                        //AutoScroll = true,
+                    };
+                    ui_tab_Center.AddTab(tab, true);
+                    tab.Tag = doc;
+
+                    //TextExtractor extractor = new TextExtractor(doc.path);
+                    //text = extractor.ExtractText(); //The string 'text' is now loaded with the text from the Word Document
+                    //a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+                     
+                    try
+                    {
+                        // Extract text from an input file.
+
+                        DocxToText dtt = new DocxToText(doc.path);
+                        text = dtt.ExtractText();
+                        a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
+                    }
+                    catch  
+                    {
+                        return;
+                    }
 
                     for (int i = a.Length - 1; i > 0; i--)
                     {
@@ -1138,6 +1257,8 @@ namespace appel
 
                 app.postMessageToService(new msg() { API = _API.SETTING_APP, KEY = _API.SETTING_APP_KEY_UPDATE_NODE_OPENING, Input = doc });
             }
+            ui_tab_Left.Enabled = true;
+            Cursor = Cursors.Default;
         }
 
         #endregion
@@ -1408,7 +1529,7 @@ namespace appel
                             Font = font_content_P,
                             Margin = new Padding(7, 5, 1, 5),
                             Padding = new Padding(1, 3, 1, 3),
-                            BorderStyle = BorderStyle.None,
+                            BorderStyle = System.Windows.Forms.BorderStyle.None,
                             RightToLeft = System.Windows.Forms.RightToLeft.No,
                         };
 

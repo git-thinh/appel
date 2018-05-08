@@ -742,13 +742,13 @@ namespace appel
                     break;
             }
 
-            if (hasUpdate)
-            {
-                using (var file = File.Create(file_name))
-                {
-                    Serializer.Serialize<oSetting>(file, _setting);
-                }
-            }
+            //if (hasUpdate)
+            //{
+            //    using (var file = File.Create(file_name))
+            //    {
+            //        Serializer.Serialize<oSetting>(file, _setting);
+            //    }
+            //}
             m.Output.Ok = hasUpdate;
             m.Output.Data = hasUpdate;
             return m;

@@ -13,7 +13,7 @@ using System.Text.RegularExpressions;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Drawing;
-using System.Diagnostics;
+using System.Diagnostics; 
 
 namespace appel
 {
@@ -31,6 +31,7 @@ namespace appel
         static object lockResponse = new object();
         static Dictionary<string, msg> dicResponses = null;
          
+
         #endregion
 
         static app()
@@ -65,6 +66,7 @@ namespace appel
             };
         }
 
+
         #region [ APP ]
 
         public static IFORM get_Main() {
@@ -88,7 +90,7 @@ namespace appel
         }
 
         public static void RUN()
-        {
+        { 
             //string s = api_crawler.getHtml("https://dictionary.cambridge.org/grammar/british-grammar/");
             //return;
 
