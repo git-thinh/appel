@@ -145,6 +145,7 @@
     <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\MouseStruct.cs" />
     <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\Point.cs" />
     <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\ThreadNativeMethods.cs" />
+    <Compile Include="Kit\kitStack.cs" />
     <Compile Include="Kit\MMF\FileMapIOException.cs" />
     <Compile Include="Kit\MMF\MapViewStream.cs" />
     <Compile Include="Kit\MMF\MemoryMappedFile.cs" />

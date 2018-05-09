@@ -163,3 +163,6 @@ Kit/DLL/nl/PdfiumViewer.resources.dll
 *.pdb
 *.dll
 *.dll
+Kit/DLL/PdfiumViewer.dll
+Kit/DLL/PdfiumViewer.pdb
+*.dll

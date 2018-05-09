@@ -10,7 +10,7 @@ using FarsiLibrary.Win;
 using System.Diagnostics;
 using Gma.System.MouseKeyHook;
 using PdfiumViewer;
-using System.Threading; 
+using System.Threading;
 
 namespace appel
 {
@@ -27,10 +27,6 @@ namespace appel
 
         const int width_tab_Left = 269;
         const int width_tab_Right = 369;
-
-        static readonly System.Drawing.Font font_content_H1 = new System.Drawing.Font("Arial", 17, FontStyle.Bold);
-        static readonly System.Drawing.Font font_content_H3 = new System.Drawing.Font("Arial", 15, FontStyle.Bold);
-        static readonly System.Drawing.Font font_content_P = new System.Drawing.Font("Arial", 12, FontStyle.Regular);
 
         #endregion
 
@@ -811,9 +807,105 @@ namespace appel
             }
         }
 
+
+        static readonly System.Drawing.Font font_content_H1 = new System.Drawing.Font("Arial", 17, FontStyle.Bold);
+        static readonly System.Drawing.Font font_content_H2 = new System.Drawing.Font("Arial", 15, FontStyle.Bold);
+        static readonly System.Drawing.Font font_content_H3 = new System.Drawing.Font("Arial", 13, FontStyle.Bold);
+        static readonly System.Drawing.Font font_content_H5 = new System.Drawing.Font("Arial", 11, FontStyle.Bold);
+        static readonly System.Drawing.Font font_content_P = new System.Drawing.Font("Arial", 11, FontStyle.Regular);
+        static readonly List<string> content_listHeading2 = new List<string>() {
+                "A.", "B.", "C.", "D.", "E.", "F.",
+                "I.", "V.",
+                "1.", "2.", "3.", "4.", "5.", "6.", "7.", "8.", "9."
+            };
+        static readonly List<string> content_listHeading3 = new List<string>() { "II.", "VI.", "IV.", "10.", "11.", "12.", "13.", "14.", "15." };
+        static readonly List<string> content_listHeading4 = new List<string>() { "III." };
+        public Control[] f_doc_buildContentControl(string[] a)
+        {
+            string si = string.Empty;
+            List<Control> list = new List<Control>();
+            GrowLabel growLabel;
+
+            for (int i = a.Length - 1; i > 0; i--)
+            {
+                si = a[i];
+                if (si.Length == 0) continue;
+                if (si[0] == '■'
+                    || content_listHeading2.IndexOf(si.Substring(0, 2)) != -1
+                    || content_listHeading3.IndexOf(si.Substring(0, 3)) != -1
+                    || content_listHeading4.IndexOf(si.Substring(0, 4)) != -1)
+                {
+                    growLabel = new GrowLabel()
+                    {
+                        Text = si,
+                        Font = ((si[0] == 'I' || si[0] == 'V' || si[0] == 'X') == true ? font_content_H2 : font_content_H3),
+                        Dock = DockStyle.Top
+                    };
+                    list.AddRange(new Control[]{
+                            new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
+                            growLabel
+                        });
+                    continue;
+                }
+
+                switch (si[0])
+                {
+                    default:
+                        growLabel = new GrowLabel()
+                        {
+                            Text = si,
+                            Font = font_content_P,
+                            Dock = DockStyle.Top
+                        };
+                        break;
+                        //case '■':
+                        //    growLabel = new GrowLabel()
+                        //    {
+                        //        Text = si.Substring(1).Trim(),
+                        //        Font = font_content_H3,
+                        //        Dock = DockStyle.Top
+                        //    };
+                        //    break;
+                        //case '¦':
+                        //    break;
+                        //case '⌐': // begin UL_OL 
+                        //    break;
+                        //case '•': // LI 
+                        //    break;
+                        //case '□': // LI LI 
+                        //    break;
+                        //case '▫': // LI LI LI 
+                        //    break;
+                        //case '┘': // end UL_OL 
+                        //    break;
+                }
+                list.AddRange(new Control[]{
+                            new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
+                            growLabel
+                        });
+            }
+
+            list.AddRange(new Control[]{
+                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
+                            new GrowLabel() {
+                                    Text = a[0],
+                                    Font = font_content_H1,
+                                    Dock = DockStyle.Top,
+                                    TextAlign = ContentAlignment.MiddleCenter,
+                                },
+                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
+                        });
+
+            return list.ToArray();
+        }
+
         public void f_doc_viewContent(oNode doc)
         {
             if (doc == null) return;
+            if (!File.Exists(doc.path)) return;
+
+            #region // exist in tabs
+
             foreach (FATabStripItem ti in ui_tab_Center.Items)
             {
                 if (ti.Tag != null)
@@ -840,7 +932,8 @@ namespace appel
                     }
                 }
             }
-            if (!File.Exists(doc.path)) return;
+
+            #endregion
 
             PdfViewer pdfViewer = null;
             Panel box_text = null;
@@ -941,64 +1034,7 @@ namespace appel
                     text = File.ReadAllText(doc.path);
                     a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
 
-                    for (int i = a.Length - 1; i > 0; i--)
-                    {
-                        si = a[i];
-                        if (si.Length == 0) continue;
-
-                        switch (si[0])
-                        {
-                            case '■':
-                                growLabel = new GrowLabel()
-                                {
-                                    Text = si,
-                                    Font = font_content_H3,
-                                    Dock = DockStyle.Top
-                                };
-                                break;
-                            //case '¦':
-                            //    break;
-                            //case '⌐': // begin UL_OL 
-                            //    break;
-                            //case '•': // LI 
-                            //    break;
-                            //case '□': // LI LI 
-                            //    break;
-                            //case '▫': // LI LI LI 
-                            //    break;
-                            //case '┘': // end UL_OL 
-                            //    break;
-                            default:
-                                growLabel = new GrowLabel()
-                                {
-                                    Text = si,
-                                    Font = font_content_P,
-                                    Dock = DockStyle.Top
-                                };
-                                break;
-                        }
-
-                        //box_text.Controls.AddRange(new Control[]{  
-                        //    new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
-                        //    growLabel
-                        //});
-                        box_text.Controls.AddRange(new Control[]{
-                            new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
-                            growLabel
-                        });
-                    }
-
-                    box_text.Controls.AddRange(new Control[]{
-                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
-                            new GrowLabel() {
-                                    Text = a[0],
-                                    Font = font_content_H1,
-                                    Dock = DockStyle.Top,
-                                    TextAlign = ContentAlignment.MiddleCenter,
-                                },
-                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
-                        });
-
+                    box_text.Controls.AddRange(f_doc_buildContentControl(a));
                     tab.Controls.Add(box_text);
 
                     #endregion
@@ -1040,81 +1076,19 @@ namespace appel
                     ui_tab_Center.AddTab(tab, true);
                     tab.Tag = doc;
 
-                    //TextExtractor extractor = new TextExtractor(doc.path);
-                    //text = extractor.ExtractText(); //The string 'text' is now loaded with the text from the Word Document
-                    //a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
-                     
                     try
                     {
                         // Extract text from an input file.
-
                         DocxToText dtt = new DocxToText(doc.path);
                         text = dtt.ExtractText();
                         a = text.Split(new char[] { '\r', '\n' }).Where(x => x.Length > 0).ToArray();
                     }
-                    catch  
+                    catch
                     {
                         return;
                     }
 
-                    for (int i = a.Length - 1; i > 0; i--)
-                    {
-                        si = a[i];
-                        if (si.Length == 0) continue;
-
-                        switch (si[0])
-                        {
-                            case '■':
-                                growLabel = new GrowLabel()
-                                {
-                                    Text = si,
-                                    Font = font_content_H3,
-                                    Dock = DockStyle.Top
-                                };
-                                break;
-                            //case '¦':
-                            //    break;
-                            //case '⌐': // begin UL_OL 
-                            //    break;
-                            //case '•': // LI 
-                            //    break;
-                            //case '□': // LI LI 
-                            //    break;
-                            //case '▫': // LI LI LI 
-                            //    break;
-                            //case '┘': // end UL_OL 
-                            //    break;
-                            default:
-                                growLabel = new GrowLabel()
-                                {
-                                    Text = si,
-                                    Font = font_content_P,
-                                    Dock = DockStyle.Top
-                                };
-                                break;
-                        }
-
-                        //box_text.Controls.AddRange(new Control[]{  
-                        //    new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
-                        //    growLabel
-                        //});
-                        box_text.Controls.AddRange(new Control[]{
-                            new Label() { AutoSize = false, Height = 10, Dock = DockStyle.Top },
-                            growLabel
-                        });
-                    }
-
-                    box_text.Controls.AddRange(new Control[]{
-                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
-                            new GrowLabel() {
-                                    Text = a[0],
-                                    Font = font_content_H1,
-                                    Dock = DockStyle.Top,
-                                    TextAlign = ContentAlignment.MiddleCenter,
-                                },
-                            new Label() { AutoSize = false, Height = 20, Dock = DockStyle.Top },
-                        });
-
+                    box_text.Controls.AddRange(f_doc_buildContentControl(a));
                     tab.Controls.Add(box_text);
 
                     #endregion
@@ -1236,6 +1210,7 @@ namespace appel
                     #endregion
                     break;
             }
+
             if (tab != null)
             {
                 document_Opening = doc;
@@ -1257,6 +1232,7 @@ namespace appel
 
                 app.postMessageToService(new msg() { API = _API.SETTING_APP, KEY = _API.SETTING_APP_KEY_UPDATE_NODE_OPENING, Input = doc });
             }
+
             ui_tab_Left.Enabled = true;
             Cursor = Cursors.Default;
         }
