@@ -56,8 +56,8 @@ namespace System
         {
             const NumberStyles styles = NumberStyles.Float | NumberStyles.AllowThousands;
             var format = NumberFormatInfo.InvariantInfo;
-
-            return double.TryParse(str, styles, format, out var result)
+            double result;
+            return double.TryParse(str, styles, format, out result)
                 ? result
                 : defaultValue;
         }
@@ -74,8 +74,8 @@ namespace System
         {
             const NumberStyles styles = NumberStyles.AllowThousands;
             var format = NumberFormatInfo.InvariantInfo;
-
-            return int.TryParse(str, styles, format, out var result)
+            int result;
+            return int.TryParse(str, styles, format, out   result)
                 ? result
                 : defaultValue;
         }
@@ -92,8 +92,8 @@ namespace System
         {
             const NumberStyles styles = NumberStyles.AllowThousands;
             var format = NumberFormatInfo.InvariantInfo;
-
-            return long.TryParse(str, styles, format, out var result)
+            long result;
+            return long.TryParse(str, styles, format, out result)
                 ? result
                 : defaultValue;
         }
@@ -169,7 +169,8 @@ namespace System
         public static TValue GetOrDefault<TKey, TValue>(this Dictionary<TKey, TValue> dic, TKey key,
             TValue defaultValue = default(TValue))
         {
-            return dic.TryGetValue(key, out var result) ? result : defaultValue;
+            TValue result;
+            return dic.TryGetValue(key, out result) ? result : defaultValue;
         }
 
         public static XElement StripNamespaces(this XElement element)

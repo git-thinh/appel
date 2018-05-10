@@ -46,6 +46,10 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="NAudio">
+      <HintPath>Kit\DLL\NAudio.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Kit\DLL\Newtonsoft.Json.dll</HintPath>
@@ -91,25 +95,6 @@
     <Compile Include="Kit\Excel\ExcelWriter.cs" />
     <Compile Include="Kit\ExecutionPlan.cs" />
     <Compile Include="Kit\Extensions.cs" />
-    <Compile Include="Kit\Fizzler\Either.cs" />
-    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlDocumentExtensions.cs" />
-    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlNodeExtensions.cs" />
-    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlNodeOps.cs" />
-    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlNodeSelection.cs" />
-    <Compile Include="Kit\Fizzler\HumanReadableSelectorGenerator.cs" />
-    <Compile Include="Kit\Fizzler\IElementOps.cs" />
-    <Compile Include="Kit\Fizzler\ISelectorGenerator.cs" />
-    <Compile Include="Kit\Fizzler\NamespacePrefix.cs" />
-    <Compile Include="Kit\Fizzler\Parser.cs" />
-    <Compile Include="Kit\Fizzler\Reader.cs" />
-    <Compile Include="Kit\Fizzler\Selector.cs" />
-    <Compile Include="Kit\Fizzler\SelectorGenerator.cs" />
-    <Compile Include="Kit\Fizzler\SelectorGeneratorTee.cs" />
-    <Compile Include="Kit\Fizzler\SelectorsCachingCompiler.cs" />
-    <Compile Include="Kit\Fizzler\SerializableAttribute.cs" />
-    <Compile Include="Kit\Fizzler\Token.cs" />
-    <Compile Include="Kit\Fizzler\Tokener.cs" />
-    <Compile Include="Kit\Fizzler\TokenKind.cs" />
     <Compile Include="Kit\Fonts\IconButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1475,6 +1460,26 @@
     <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\MouseStruct.cs" />
     <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\Point.cs" />
     <Compile Include="Kit\Gma.System.MouseKeyHook\WinApi\ThreadNativeMethods.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\CssSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\ExtensionMethods.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\NodeExtensionMethods.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\PseudoClass.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\PseudoClassNameAttribute.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\PseudoClassSelectors\FirstChildPseudoClass.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\PseudoClassSelectors\LastChildPseudoClass.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\PseudoClassSelectors\NotPseudoClass.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\PseudoClassSelectors\NthChildPseudoClass.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\AllSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\AttributeSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\ClassNameSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\IdSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\ImediateChildrenSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\PseudoClassSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\SiblingImediateSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\SiblingSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Selectors\TagNameSelector.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Token.cs" />
+    <Compile Include="Kit\HtmlAgilityPack.CssSelectors\Tokenizer.cs" />
     <Compile Include="Kit\kitStack.cs" />
     <Compile Include="Kit\MMF\FileMapIOException.cs" />
     <Compile Include="Kit\MMF\MapViewStream.cs" />
@@ -1876,7 +1881,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico" />
-    <None Include="Kit\Fizzler\README.md" />
     <None Include="Kit\Geckofx-33\core\ClassDiagrams\nsIDOMNode.cd" />
     <None Include="Kit\Geckofx-33\core\DOM\Events\DomEvents.cd" />
     <None Include="Kit\Geckofx-33\core\Geckofx-Core.dll.config">
@@ -1884,11 +1888,13 @@
     </None>
     <None Include="Kit\Geckofx-33\core\Net\Requests.cd" />
     <None Include="Kit\Geckofx-33\core\Windows\Taskbar\JumpListItems.cd" />
+    <None Include="Kit\HtmlAgilityPack.CssSelectors\README.md" />
     <None Include="System\System.Xml.Linq\System.Xml.Linq\ChangeLog" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Kit\DLL\PdfiumViewer.dll" />
     <EmbeddedResource Include="Kit\DLL\ICSharpCode.SharpZipLib.dll" />
+    <EmbeddedResource Include="Kit\DLL\NAudio.dll" />
     <Content Include="Kit\Geckofx-33\core\Readme.txt" />
     <Content Include="Kit\MMF\ReadMe.txt" />
     <Content Include="Kit\mustache\mustache-sharp.csproj" />

@@ -11,7 +11,7 @@ using HtmlAgilityPack;
 using System.Net.Sockets;
 using System.Web;
 using System.Threading;
-using Fizzler.Systems.HtmlAgilityPack;
+//using Fizzler.Systems.HtmlAgilityPack;
 
 namespace appel
 {
@@ -1101,17 +1101,16 @@ namespace appel
                                     // QuerySelectorAll extension method on HtmlNode
                                     var watchPage = doc.DocumentNode;
 
-                                    // Extract values
-                                    HtmlNode node = watchPage.QuerySelector("meta[itemprop=\"datePublished\"]");
-
-                                    var uploadDate = node
+                                    // Extract values 
+                                    var uploadDate = watchPage.QuerySelector("meta[itemprop=\"datePublished\"]")
                                         .GetAttributeValue("content", "1900-01-01")
-                                        .ParseDateTimeOffset("yyyy-MM-dd");
-                                    var description = watchPage.QuerySelector("p#eow-description").TextEx();
+                                        .ParseDateTimeOffset("yyyy-MM-dd"); 
                                     var likeCount = watchPage.QuerySelector("button.like-button-renderer-like-button").InnerText
                                         .StripNonDigit().ParseLongOrDefault();
                                     var dislikeCount = watchPage.QuerySelector("button.like-button-renderer-dislike-button").InnerText
-                                        .StripNonDigit().ParseLongOrDefault();
+                                        .StripNonDigit().ParseLongOrDefault(); 
+                                    var description = watchPage.QuerySelector("p#eow-description").TextEx();
+
                                     var statistics = new Statistics(viewCount, likeCount, dislikeCount);
                                     var thumbnails = new ThumbnailSet(videoId);
 
