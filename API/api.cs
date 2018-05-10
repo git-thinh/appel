@@ -1038,6 +1038,8 @@ namespace appel
 
                             oVideo video;
 
+                            #region [ GET VIDEO INFO ] 
+
                             if (!string.IsNullOrEmpty(query))
                             {
                                 //query = HttpUtility.HtmlDecode(query);
@@ -1117,6 +1119,8 @@ namespace appel
                                     video = new oVideo(videoId, author, uploadDate, title, description, thumbnails, duration, keywords, statistics);
                                 }
                             }
+                            
+                            #endregion
 
                             ;
                             ///////////////////////////////////////////////////////////////
