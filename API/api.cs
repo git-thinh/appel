@@ -1036,11 +1036,15 @@ namespace appel
                             sr.Close();
                             rs.Close();
 
+                            oVideo video;
+
                             if (!string.IsNullOrEmpty(query))
                             {
                                 //query = HttpUtility.HtmlDecode(query);
 
-                                // Get video info
+                                //////////////////////////////////////////////////////
+                                // GET VIDEO INFO
+
                                 var videoInfo = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
                                 var rawParams = query.Split('&');
                                 foreach (var rawParam in rawParams)
@@ -1072,7 +1076,8 @@ namespace appel
                                 long.TryParse(videoInfo["view_count"], out viewCount);
                                 var keywords = videoInfo["keywords"].Split(',');
 
-                                // Get video watch page
+                                ///////////////////////////////////////////////////////////////
+                                // GET VIDEO WATCH PAGE
                                 using (WebClient webWatchPage = new WebClient())
                                 {
                                     webWatchPage.Encoding = Encoding.UTF8;
@@ -1110,18 +1115,21 @@ namespace appel
                                     var statistics = new Statistics(viewCount, likeCount, dislikeCount);
                                     var thumbnails = new ThumbnailSet(videoId);
 
-                                    var video = new oVideo(videoId, author, uploadDate, title, description, thumbnails, duration, keywords, statistics);
-
+                                    video = new oVideo(videoId, author, uploadDate, title, description, thumbnails, duration, keywords, statistics);
                                 }
-
-                                ////////////////////////////////////////////////////////////////////////
-
-                                // Get media stream info set
-
-
-
-
                             }
+
+                            ;
+                            ///////////////////////////////////////////////////////////////
+                            // GET MEDIA STREAM INFO SET
+
+                            ////////////////////////////////////////////////////////////////////////
+
+                            // Get media stream info set
+
+
+
+
                         }, w);
                         break;
                 }
@@ -1151,7 +1159,7 @@ namespace appel
             // https://youtu.be/yIVRs6YSbOM
             var shortMatch =
                 Regex.Match(videoUrl, @"youtu\.be/(.*?)(?:\?|&|/|$)").Groups[1].Value;
-            if (!string.IsNullOrEmpty(shortMatch)   && ValidateVideoId(shortMatch))
+            if (!string.IsNullOrEmpty(shortMatch) && ValidateVideoId(shortMatch))
             {
                 videoId = shortMatch;
                 return true;
@@ -1160,7 +1168,7 @@ namespace appel
             // https://www.youtube.com/embed/yIVRs6YSbOM
             var embedMatch =
                 Regex.Match(videoUrl, @"youtube\..+?/embed/(.*?)(?:\?|&|/|$)").Groups[1].Value;
-            if (!string.IsNullOrEmpty(embedMatch)  && ValidateVideoId(embedMatch))
+            if (!string.IsNullOrEmpty(embedMatch) && ValidateVideoId(embedMatch))
             {
                 videoId = embedMatch;
                 return true;
