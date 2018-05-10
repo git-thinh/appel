@@ -11,11 +11,15 @@ using HtmlAgilityPack;
 using System.Net.Sockets;
 using System.Web;
 using System.Threading;
+using Fizzler.Systems.HtmlAgilityPack;
 
 namespace appel
 {
     public class _API
     {
+        public const string YOUTUBE = "YOUTUBE";
+        public const string YOUTUBE_INFO = "YOUTUBE_INFO";
+
         public const string SETTING_APP = "SETTING_APP";
         public const string SETTING_APP_KEY_INT = "SETTING_APP_KEY_INT";
         public const string SETTING_APP_KEY_UPDATE_FOLDER = "SETTING_APP_KEY_UPDATE_FOLDER";
@@ -45,7 +49,7 @@ namespace appel
 
     public interface IFORM
     {
-        void api_responseMsg(msg m);
+        void api_responseMsg(object sender, threadMsgEventArgs e);
         void api_initMsg(msg m);
     }
 
@@ -75,7 +79,7 @@ namespace appel
                         if (cache.Count > 0)
                         {
                             msg m = cache.Dequeue();
-                            if (fom != null) fom.api_responseMsg(m);
+                            if (fom != null) fom.api_responseMsg(null, new threadMsgEventArgs(m));
                         }
                     }
                 }), fom, 100, 100);
@@ -996,4 +1000,187 @@ namespace appel
         public void Close() { }
     }
 
+    public class api_youtube : api_base, IAPI
+    {
+        public api_youtube()
+        {
+            ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
+                | (SecurityProtocolType)3072
+                | (SecurityProtocolType)0x00000C00
+                | SecurityProtocolType.Tls;
+        }
+
+        public void Close() { }
+
+        public msg Execute(msg msg)
+        {
+            if (msg != null && msg.Input != null)
+            {
+                string s, url, videoId;
+                HttpWebRequest w;
+                HtmlDocument doc;
+
+                switch (msg.KEY)
+                {
+                    case _API.YOUTUBE_INFO:
+                        videoId = (string)msg.Input;
+                        url = string.Format("https://www.youtube.com/get_video_info?video_id={0}&el=embedded&sts=&hl=en", videoId);
+                        w = (HttpWebRequest)WebRequest.Create(new Uri(url));
+                        //w.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36";
+                        w.BeginGetResponse(asyncResult =>
+                        {
+                            HttpWebResponse rs = (HttpWebResponse)w.EndGetResponse(asyncResult); //add a break point here 
+                            StreamReader sr = new StreamReader(rs.GetResponseStream(), Encoding.UTF8);
+                            string query = sr.ReadToEnd();
+                            sr.Close();
+                            rs.Close();
+
+                            if (!string.IsNullOrEmpty(query))
+                            {
+                                //query = HttpUtility.HtmlDecode(query);
+
+                                // Get video info
+                                var videoInfo = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                                var rawParams = query.Split('&');
+                                foreach (var rawParam in rawParams)
+                                {
+                                    var param = HttpUtility.UrlDecode(rawParam);
+
+                                    // Look for the equals sign
+                                    var equalsPos = param.IndexOf('=');
+                                    if (equalsPos <= 0)
+                                        continue;
+
+                                    // Get the key and value
+                                    var key = param.Substring(0, equalsPos);
+                                    var value = equalsPos < param.Length
+                                        ? param.Substring(equalsPos + 1)
+                                        : string.Empty;
+
+                                    // Add to dictionary
+                                    videoInfo[key] = value;
+                                }
+
+                                // Extract values
+                                var title = videoInfo["title"];
+                                var author = videoInfo["author"];
+                                double length_seconds = 0;
+                                double.TryParse(videoInfo["length_seconds"], out length_seconds);
+                                TimeSpan duration = TimeSpan.FromSeconds(length_seconds);
+                                long viewCount = 0;
+                                long.TryParse(videoInfo["view_count"], out viewCount);
+                                var keywords = videoInfo["keywords"].Split(',');
+
+                                // Get video watch page
+                                using (WebClient webWatchPage = new WebClient())
+                                {
+                                    webWatchPage.Encoding = Encoding.UTF8;
+                                    s = webWatchPage.DownloadString(string.Format("https://www.youtube.com/watch?v={0}&disable_polymer=true&hl=en", videoId));
+
+                                    s = Regex.Replace(s, @"<script[^>]*>[\s\S]*?</script>", string.Empty);
+                                    s = Regex.Replace(s, @"<style[^>]*>[\s\S]*?</style>", string.Empty);
+                                    s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
+                                    s = Regex.Replace(s, @"(?s)(?<=<!--).+?(?=-->)", string.Empty).Replace("<!---->", string.Empty);
+
+                                    //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
+                                    //s = Regex.Replace(s, @"<noscript[^>]*>[\s\S]*?</noscript>", string.Empty);
+                                    //s = Regex.Replace(s, @"</?(?i:embed|object|frameset|frame|iframe|meta|link)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                                    s = Regex.Replace(s, @"</?(?i:embed|object|frameset|frame|iframe|link)(.|\n|\s)*?>", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+                                    // Load the document using HTMLAgilityPack as normal
+                                    doc = new HtmlDocument();
+                                    doc.LoadHtml(s);
+
+                                    // Fizzler for HtmlAgilityPack is implemented as the
+                                    // QuerySelectorAll extension method on HtmlNode
+                                    var watchPage = doc.DocumentNode;
+
+                                    // Extract values
+                                    HtmlNode node = watchPage.QuerySelector("meta[itemprop=\"datePublished\"]");
+
+                                    var uploadDate = node
+                                        .GetAttributeValue("content", "1900-01-01")
+                                        .ParseDateTimeOffset("yyyy-MM-dd");
+                                    var description = watchPage.QuerySelector("p#eow-description").TextEx();
+                                    var likeCount = watchPage.QuerySelector("button.like-button-renderer-like-button").InnerText
+                                        .StripNonDigit().ParseLongOrDefault();
+                                    var dislikeCount = watchPage.QuerySelector("button.like-button-renderer-dislike-button").InnerText
+                                        .StripNonDigit().ParseLongOrDefault();
+                                    var statistics = new Statistics(viewCount, likeCount, dislikeCount);
+                                    var thumbnails = new ThumbnailSet(videoId);
+
+                                    var video = new oVideo(videoId, author, uploadDate, title, description, thumbnails, duration, keywords, statistics);
+
+                                }
+
+                                ////////////////////////////////////////////////////////////////////////
+
+                                // Get media stream info set
+
+
+
+
+                            }
+                        }, w);
+                        break;
+                }
+            }
+            return msg;
+        }
+
+        /// <summary>
+        /// Tries to parse video ID from a YouTube video URL.
+        /// </summary>
+        public static bool TryParseVideoId(string videoUrl, out string videoId)
+        {
+            videoId = default(string);
+
+            if (string.IsNullOrEmpty(videoUrl))
+                return false;
+
+            // https://www.youtube.com/watch?v=yIVRs6YSbOM
+            var regularMatch =
+                Regex.Match(videoUrl, @"youtube\..+?/watch.*?v=(.*?)(?:&|/|$)").Groups[1].Value;
+            if (!string.IsNullOrEmpty(regularMatch) && ValidateVideoId(regularMatch))
+            {
+                videoId = regularMatch;
+                return true;
+            }
+
+            // https://youtu.be/yIVRs6YSbOM
+            var shortMatch =
+                Regex.Match(videoUrl, @"youtu\.be/(.*?)(?:\?|&|/|$)").Groups[1].Value;
+            if (!string.IsNullOrEmpty(shortMatch)   && ValidateVideoId(shortMatch))
+            {
+                videoId = shortMatch;
+                return true;
+            }
+
+            // https://www.youtube.com/embed/yIVRs6YSbOM
+            var embedMatch =
+                Regex.Match(videoUrl, @"youtube\..+?/embed/(.*?)(?:\?|&|/|$)").Groups[1].Value;
+            if (!string.IsNullOrEmpty(embedMatch)  && ValidateVideoId(embedMatch))
+            {
+                videoId = embedMatch;
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Verifies that the given string is syntactically a valid YouTube video ID.
+        /// </summary>
+        public static bool ValidateVideoId(string videoId)
+        {
+            if (string.IsNullOrEmpty(videoId))
+                return false;
+
+            if (videoId.Length != 11)
+                return false;
+
+            return !Regex.IsMatch(videoId, @"[^0-9a-zA-Z_\-]");
+        }
+    }
 }

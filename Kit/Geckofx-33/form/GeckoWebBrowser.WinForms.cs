@@ -226,7 +226,7 @@ namespace Gecko
 						{
 							try
 							{
-								if (!window.GetClosedAttribute()) window.Close();
+								if (window != null && !window.GetClosedAttribute()) window.Close();
 							}
 							finally
 							{

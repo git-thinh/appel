@@ -166,3 +166,4 @@ Kit/DLL/nl/PdfiumViewer.resources.dll
 Kit/DLL/PdfiumViewer.dll
 Kit/DLL/PdfiumViewer.pdb
 *.dll
+.vs/appel/v15/Server/sqlite3/storage.ide-wal

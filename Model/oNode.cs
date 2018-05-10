@@ -22,6 +22,8 @@ namespace appel
         FOLDER,
         PACKAGE,
         PACKAGE_ARTICLE,
+        YOUTUBE,
+        LINK,
         TAG,
     }
     

@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>G:\_EL\Document\data_el2\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;GECKO_1_9_1;GECKO_1_9</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;GECKO_1_9_1;GECKO_1_9;NET_2_0</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -90,6 +90,26 @@
     <Compile Include="Kit\DocxToText.cs" />
     <Compile Include="Kit\Excel\ExcelWriter.cs" />
     <Compile Include="Kit\ExecutionPlan.cs" />
+    <Compile Include="Kit\Extensions.cs" />
+    <Compile Include="Kit\Fizzler\Either.cs" />
+    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlDocumentExtensions.cs" />
+    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlNodeExtensions.cs" />
+    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlNodeOps.cs" />
+    <Compile Include="Kit\Fizzler\Fizzler.Systems.HtmlAgilityPack\HtmlNodeSelection.cs" />
+    <Compile Include="Kit\Fizzler\HumanReadableSelectorGenerator.cs" />
+    <Compile Include="Kit\Fizzler\IElementOps.cs" />
+    <Compile Include="Kit\Fizzler\ISelectorGenerator.cs" />
+    <Compile Include="Kit\Fizzler\NamespacePrefix.cs" />
+    <Compile Include="Kit\Fizzler\Parser.cs" />
+    <Compile Include="Kit\Fizzler\Reader.cs" />
+    <Compile Include="Kit\Fizzler\Selector.cs" />
+    <Compile Include="Kit\Fizzler\SelectorGenerator.cs" />
+    <Compile Include="Kit\Fizzler\SelectorGeneratorTee.cs" />
+    <Compile Include="Kit\Fizzler\SelectorsCachingCompiler.cs" />
+    <Compile Include="Kit\Fizzler\SerializableAttribute.cs" />
+    <Compile Include="Kit\Fizzler\Token.cs" />
+    <Compile Include="Kit\Fizzler\Tokener.cs" />
+    <Compile Include="Kit\Fizzler\TokenKind.cs" />
     <Compile Include="Kit\Fonts\IconButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1620,6 +1640,7 @@
     </Compile>
     <Compile Include="Model\oCrawler.cs" />
     <Compile Include="Model\oSetting.cs" />
+    <Compile Include="Model\oVideo.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1779,6 +1800,33 @@
     <Compile Include="System\System.Security.RightsManagement\UnsignedPublishLicense.cs" />
     <Compile Include="System\System.Security.RightsManagement\UseLicense.cs" />
     <Compile Include="System\System.Security.RightsManagement\UserActivationMode.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\Extensions.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\LoadOptions.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\SaveOptions.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XAttribute.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XCData.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XComment.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XContainer.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XDeclaration.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XDocument.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XDocumentType.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XElement.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XIterators.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XName.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XNamespace.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XNode.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XNodeDocumentOrderComparer.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XNodeEqualityComparer.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XNodeNavigator.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XNodeReader.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XNodeWriter.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XObject.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XObjectChange.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XObjectChangeEventArgs.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XProcessingInstruction.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XStreamingElement.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XText.cs" />
+    <Compile Include="System\System.Xml.Linq\System.Xml.Linq\XUtil.cs" />
     <Compile Include="uiItemLabel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1828,6 +1876,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="icon.ico" />
+    <None Include="Kit\Fizzler\README.md" />
     <None Include="Kit\Geckofx-33\core\ClassDiagrams\nsIDOMNode.cd" />
     <None Include="Kit\Geckofx-33\core\DOM\Events\DomEvents.cd" />
     <None Include="Kit\Geckofx-33\core\Geckofx-Core.dll.config">
@@ -1835,6 +1884,7 @@
     </None>
     <None Include="Kit\Geckofx-33\core\Net\Requests.cd" />
     <None Include="Kit\Geckofx-33\core\Windows\Taskbar\JumpListItems.cd" />
+    <None Include="System\System.Xml.Linq\System.Xml.Linq\ChangeLog" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Kit\DLL\PdfiumViewer.dll" />
