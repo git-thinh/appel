@@ -825,16 +825,20 @@ namespace appel
             string si = string.Empty;
             List<Control> list = new List<Control>();
             GrowLabel growLabel;
-
+            bool isHeading = false;
             for (int i = a.Length - 1; i > 0; i--)
             {
                 si = a[i];
                 if (si.Length == 0) continue;
-                if (si[0] == '■'
-                    || content_listHeading2.IndexOf(si.Substring(0, 2)) != -1
-                    || content_listHeading3.IndexOf(si.Substring(0, 3)) != -1
-                    || content_listHeading4.IndexOf(si.Substring(0, 4)) != -1)
-                {
+
+                isHeading = false;
+                if (si[0] == '■') isHeading = true;
+                if (si.Length > 1 && content_listHeading2.IndexOf(si.Substring(0, 2)) != -1) isHeading = true;
+                else if (si.Length > 2 && content_listHeading3.IndexOf(si.Substring(0, 3)) != -1) isHeading = true;
+                else if (si.Length > 3 && content_listHeading4.IndexOf(si.Substring(0, 4)) != -1) isHeading = true;
+
+                if (isHeading)
+                { 
                     growLabel = new GrowLabel()
                     {
                         Text = si,
