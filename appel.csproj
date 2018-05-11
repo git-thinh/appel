@@ -1646,6 +1646,7 @@
     <Compile Include="Model\oCrawler.cs" />
     <Compile Include="Model\oSetting.cs" />
     <Compile Include="Model\oVideo.cs" />
+    <Compile Include="Model\VideoExtendtion.cs" />
     <Compile Include="Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
