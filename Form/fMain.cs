@@ -92,10 +92,14 @@ namespace appel
             Visible = false,
         };
 
-        FATabStripItem ui_tab_Tag = new FATabStripItem() { Title = "Tag", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "Content", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        //☆★☐☑⧉✉⦿⦾⚠⚿⛑✕✓⥀✖↭☊⦧▷◻◼⟲≔☰⚒❯►❚❚❮⟳⚑⚐✎✛
+        //🕮🖎✍⦦☊🕭🔔🗣🗢🖳🎚🏷🖈🎗🏱🏲🗀🗁🕷🖒🖓👍👎♥♡♫♪♬♫🎙🎖🗝●◯⬤⚲☰⚒🕩🕪❯►❮⟳⚐🗑✎✛🗋🖫⛉ ⛊ ⛨⚏★☆
+        FATabStripItem ui_tab_Tag = new FATabStripItem() { Title = "⛊", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Content = new FATabStripItem() { Title = "☰", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Folder = new FATabStripItem() { Visible = false, Title = "☘", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Search = new FATabStripItem() { Title = "⚲", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Media = new FATabStripItem() { Title = "►", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Noti = new FATabStripItem() { Title = "⚐", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
 
 
         System.Windows.Forms.TreeView ui_cat_treeView;
@@ -295,10 +299,12 @@ namespace appel
 
 
             ui_tab_Left.Items.AddRange(new FATabStripItem[] {
+                ui_tab_Media,
                 ui_tab_Tag,
                 ui_tab_Content,
                 ui_tab_Folder,
                 ui_tab_Search,
+                ui_tab_Noti,
             });
 
             ui_tab_Center.Items.AddRange(new FATabStripItem[] {
@@ -727,7 +733,7 @@ namespace appel
                 var lbl = new uiItemLabel(node,
                     IconType.ios_book_outline)
                 {
-                    BackColor = Color.WhiteSmoke,
+                    //BackColor = Color.WhiteSmoke,
                     Height = 22,
                     Margin = new Padding(7, 5, 1, 5),
                 };
@@ -765,7 +771,7 @@ namespace appel
                 var lbl = new uiItemLabel(node,
                     IconType.ios_book_outline)
                 {
-                    BackColor = Color.WhiteSmoke,
+                    //BackColor = Color.WhiteSmoke,
                     Height = 22,
                     Margin = new Padding(7, 5, 1, 5),
                 };

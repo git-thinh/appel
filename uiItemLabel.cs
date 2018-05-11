@@ -42,7 +42,7 @@ namespace appel
             };
             _exit = new IconButton() { IconType = IconType.close_circled, Visible = false };
             _text = new Label() { Text = text, AutoSize = true, TextAlign = ContentAlignment.TopLeft };
-            _state = new Label() { Dock = DockStyle.Left, AutoSize = false, BackColor = Color.Orange, Width = 1 };
+            _state = new Label() { Dock = DockStyle.Left, AutoSize = false, Width = 1 };
 
             using (Graphics g = CreateGraphics())
             {
