@@ -1039,7 +1039,8 @@ namespace appel
                             rs.Close();
 
                             oVideo video = null;
-                            #region [ GET VIDEO INFO ] 
+                            List<ClosedCaptionTrackInfo> listCaptionTrackInfo = new List<ClosedCaptionTrackInfo>();
+                            #region [ VIDEO INFO - CAPTION - SUBTITLE ] 
 
                             if (!string.IsNullOrEmpty(query))
                             {
@@ -1078,6 +1079,32 @@ namespace appel
                                 long viewCount = 0;
                                 long.TryParse(videoInfo["view_count"], out viewCount);
                                 var keywords = videoInfo["keywords"].Split(',');
+
+                                //////////////////////////////////////////////////////
+                                // CAPTION - SUBTITLE
+
+                                // Extract captions metadata
+                                var playerResponseRaw = videoInfo["player_response"];
+                                var playerResponseJson = JToken.Parse(playerResponseRaw);
+                                var captionTracksJson = playerResponseJson.SelectToken("$..captionTracks").EmptyIfNull();
+
+                                // Parse closed caption tracks 
+                                foreach (var captionTrackJson in captionTracksJson)
+                                {
+                                    // Extract values
+                                    var code = captionTrackJson["languageCode"].Value<string>();
+                                    var name = captionTrackJson["name"]["simpleText"].Value<string>();
+                                    var language = new Language(code, name);
+                                    var isAuto = captionTrackJson["vssId"].Value<string>()
+                                        .StartsWith("a.", StringComparison.OrdinalIgnoreCase);
+                                    var url_caption = captionTrackJson["baseUrl"].Value<string>();
+
+                                    // Enforce format
+                                    url_caption = SetQueryParameter(url_caption, "format", "3");
+
+                                    var closedCaptionTrackInfo = new ClosedCaptionTrackInfo(url_caption, language, isAuto);
+                                    listCaptionTrackInfo.Add(closedCaptionTrackInfo);
+                                }
 
                                 ///////////////////////////////////////////////////////////////
                                 // GET VIDEO WATCH PAGE
@@ -1121,12 +1148,14 @@ namespace appel
                                 }
                             }
 
-                            #endregion
-
+                            #endregion                            
                             string vinfo = $"Id: {video.Id} | Title: {video.Title} | Author: {video.Author}";
+                            
+                            //////////////////////////////////////////////////////////////////////////////////////////////
 
+                            Channel channel = null;
                             PlayerContext playerContext = null;
-                            #region [ GET MEDIA STREAM INFO SET ]
+                            #region [ MEDIA STREAM INFO SET - CHANNEL INFO ]
 
                             using (WebClient requestGetVideoEmbedPage = new WebClient())
                             {
@@ -1153,6 +1182,14 @@ namespace appel
                                 var sourceUrl = configJson["assets"]["js"].Value<string>();
                                 var sts_value = configJson["sts"].Value<string>();
 
+                                // Extract values
+                                var channelPath = configJson["args"]["channel_path"].Value<string>();
+                                var id = channelPath.SubstringAfter("channel/");
+                                var title = configJson["args"]["expanded_title"].Value<string>();
+                                var logoUrl = configJson["args"]["profile_picture"].Value<string>();
+
+                                channel = new Channel(id, title, logoUrl);
+
                                 // Check if successful
                                 if (sourceUrl.IsBlank() || sts_value.IsBlank())
                                     throw new Exception("Could not parse player context.");
@@ -1164,10 +1201,13 @@ namespace appel
 
                             #endregion
 
-                            string sts = playerContext.Sts;
-                            Dictionary<string, string> videoInfo_EmbeddedOrDetailPage = new Dictionary<string, string>();
-                            #region [ GET VIDEO INFO ]
+                            //////////////////////////////////////////////////////////////////////////////////////////////
 
+                            string sts = playerContext.Sts;
+                            MediaStreamInfoSet streamInfoSet = null;
+                            #region [ STREAM VIDEO INFO FROM EMBED/DETAIL PAGE ]
+
+                            Dictionary<string, string> videoInfo_EmbeddedOrDetailPage = new Dictionary<string, string>();
                             using (WebClient requestGetVideoInfo = new WebClient())
                             {
                                 requestGetVideoInfo.Encoding = Encoding.UTF8;
@@ -1211,12 +1251,15 @@ namespace appel
                                 throw new Exception(string.Format("Video [{0}] requires purchase and cannot be processed." + Environment.NewLine + "Free preview video [{1}] is available.", videoId, previewVideoId));
                             }
 
-                            #endregion
-
-                            MediaStreamInfoSet streamInfoSet = GetVideoMediaStreamInfosAsync(videoInfo_EmbeddedOrDetailPage);
+                            streamInfoSet = GetVideoMediaStreamInfosAsync(videoInfo_EmbeddedOrDetailPage);
                             var streamInfo = streamInfoSet.Muxed.WithHighestVideoQuality();
                             var normalizedFileSize = NormalizeFileSize(streamInfo.Size);
+
+                            #endregion
+
                             string vstreamInfo = $"Quality: {streamInfo.VideoQualityLabel} | Container: {streamInfo.Container} | Size: {normalizedFileSize}";
+
+                            //////////////////////////////////////////////////////////////////////////////////////////////
 
                             ////// Compose file name, based on metadata
                             ////var fileExtension = streamInfo.Container.GetFileExtension();
@@ -1228,9 +1271,6 @@ namespace appel
                             ////Console.WriteLine('-'.Repeat(100));
                             ////var progress = new Progress<double>(p => Console.Title = $"YoutubeExplode Demo [{p:P0}]");
                             ////await client.DownloadMediaStreamAsync(streamInfo, fileName, progress);
-
-                            ;
-                            ////////////////////////////////////////////////////////////////////////
                         }, w);
                         break;
                 }
@@ -1622,7 +1662,7 @@ namespace appel
         }
 
         #endregion
-        
+
         #region
 
         //////private PlayerSource GetVideoPlayerSourceAsync(string sourceUrl)
