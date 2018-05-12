@@ -99,7 +99,7 @@ namespace appel
         FATabStripItem ui_tab_Folder = new FATabStripItem() { Visible = false, Title = "☘", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Search = new FATabStripItem() { Title = "⚲", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
         FATabStripItem ui_tab_Media = new FATabStripItem() { Title = "►", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
-        FATabStripItem ui_tab_Noti = new FATabStripItem() { Title = "⚐", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
+        FATabStripItem ui_tab_Noti = new FATabStripItem() { Title = "⚑", CanClose = false, Padding = new Padding(0), Margin = new Padding(0), BackColor = Color.White, };
 
 
         System.Windows.Forms.TreeView ui_cat_treeView;

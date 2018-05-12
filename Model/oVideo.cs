@@ -567,8 +567,11 @@ namespace appel
         /// <inheritdoc />
         public override bool Equals(object obj)
         {
-            if (obj is VideoResolution other)
+            if (obj is VideoResolution)
+            {
+                VideoResolution other = (VideoResolution)obj;
                 return Equals(other);
+            }
 
             return false;
         }
