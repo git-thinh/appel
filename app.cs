@@ -248,14 +248,14 @@ namespace appel
 
             //app.notification_Show("Hi, " + app.app_name, 3000);
 
-            //postMessageToService(new msg() { API = _API.YOUTUBE, KEY = _API.YOUTUBE_INFO, Input = @"nIwU-9ZTTJc" }); 
+            postMessageToService(new msg() { API = _API.YOUTUBE, KEY = _API.YOUTUBE_INFO, Input = @"nIwU-9ZTTJc" });
 
-            main.f_doc_viewContent(new oNode()
-            {
-                title = "Youtube",
-                path = @"https://r6---sn-8qj-i5oed.googlevideo.com/videoplayback?sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpcm2cms%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&source=youtube&dur=234.289&initcwndbps=1042500&ei=D6z2WoDyNsuxgQPB4ruYCQ&expire=1526136943&mn=sn-8qj-i5oed%2Csn-i3beln7z&mm=31%2C29&pl=20&mime=video%2Fmp4&id=o-AGrT4c_bkr_PhBjaEQ0PO5gaO48aQ7SIah-UsmwA-OKr&ipbits=0&requiressl=yes&ip=14.177.123.70&mv=m&mt=1526115221&ms=au%2Crdu&signature=0F512CC247A9EF8206EBA5523608B894CD05ACF9.9CA3E2B2E40EEB2EA70A592CAB1952E7BE7668D6&ratebypass=yes&c=WEB&lmt=1510741625396835&key=yt6&itag=22&pcm2cms=yes&fvip=6",
-                type = oNodeType.LINK
-            });
+            //main.f_doc_viewContent(new oNode()
+            //{
+            //    title = "Youtube",
+            //    path = @"https://r6---sn-8qj-i5oed.googlevideo.com/videoplayback?sparams=dur%2Cei%2Cid%2Cinitcwndbps%2Cip%2Cipbits%2Citag%2Clmt%2Cmime%2Cmm%2Cmn%2Cms%2Cmv%2Cpcm2cms%2Cpl%2Cratebypass%2Crequiressl%2Csource%2Cexpire&source=youtube&dur=234.289&initcwndbps=1042500&ei=D6z2WoDyNsuxgQPB4ruYCQ&expire=1526136943&mn=sn-8qj-i5oed%2Csn-i3beln7z&mm=31%2C29&pl=20&mime=video%2Fmp4&id=o-AGrT4c_bkr_PhBjaEQ0PO5gaO48aQ7SIah-UsmwA-OKr&ipbits=0&requiressl=yes&ip=14.177.123.70&mv=m&mt=1526115221&ms=au%2Crdu&signature=0F512CC247A9EF8206EBA5523608B894CD05ACF9.9CA3E2B2E40EEB2EA70A592CAB1952E7BE7668D6&ratebypass=yes&c=WEB&lmt=1510741625396835&key=yt6&itag=22&pcm2cms=yes&fvip=6",
+            //    type = oNodeType.LINK
+            //});
 
             //http://www.youtube.com/api/timedtext?lang=en&v=9fEurt2OZ0I
             //const string m_url = @"http://web20office.com/crm/demo/system/login.php?r=/crm/demo";
