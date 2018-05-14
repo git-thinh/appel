@@ -14,7 +14,6 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Drawing;
 using System.Diagnostics;
-using Gecko;
 
 namespace appel
 {
@@ -92,9 +91,7 @@ namespace appel
         }
 
         public static void RUN()
-        {
-            f_gecko_Init();
-
+        { 
             //string s = api_crawler.getHtml("https://dictionary.cambridge.org/grammar/british-grammar/");
             //return;
 
@@ -142,8 +139,6 @@ namespace appel
                                            MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
             {
-                f_gecko_Stop();
-
                 foreach (var kv in dicService)
                     if (kv.Value != null)
                         kv.Value.Stop();
@@ -173,30 +168,7 @@ namespace appel
         }
 
         #endregion
-        
-        #region [ GECKO ]
-
-        static void f_gecko_Stop() {
-            //Xpcom.Shutdown();
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-        }
-
-        static void f_gecko_Init()
-        {
-            Xpcom.Initialize("bin");
-            GeckoPreferences.User["extensions.blocklist.enabled"] = false;
-            // Uncomment the follow line to enable error page
-            GeckoPreferences.User["browser.xul.error_pages.enabled"] = true;
-            GeckoPreferences.User["gfx.font_rendering.graphite.enabled"] = true;
-            GeckoPreferences.User["full-screen-api.enabled"] = true;
-
-            //GeckoPreferences.User["media.navigator.enabled"] = true;
-            //GeckoPreferences.User["media.navigator.permission.disabled"] = true; // enable Access to video & audio
-        }
-
-        #endregion
-
+         
         #region [ MEDIA ]
 
         static void f_media_Init() {
@@ -248,7 +220,7 @@ namespace appel
 
             //app.notification_Show("Hi, " + app.app_name, 3000);
 
-            postMessageToService(new msg() { API = _API.YOUTUBE, KEY = _API.YOUTUBE_INFO, Input = @"nIwU-9ZTTJc" });
+            //postMessageToService(new msg() { API = _API.YOUTUBE, KEY = _API.YOUTUBE_INFO, Input = @"nIwU-9ZTTJc" });
 
             //main.f_doc_viewContent(new oNode()
             //{

@@ -11,7 +11,6 @@ using System.Diagnostics;
 using Gma.System.MouseKeyHook;
 using PdfiumViewer;
 using System.Threading;
-using Gecko;
 
 namespace appel
 {
@@ -956,7 +955,6 @@ namespace appel
             string text = string.Empty;
             string si;
             GrowLabel growLabel = null;
-            GeckoWebBrowser browser = null;
             Cursor = Cursors.WaitCursor;
             ui_tab_Left.Enabled = false;
 
@@ -1031,63 +1029,7 @@ namespace appel
                     };
                     ui_tab_Center.AddTab(tab, true);
                     tab.Tag = doc;
-
-                    browser = new GeckoWebBrowser();
-                    browser.Dock = DockStyle.Fill;
-                    //browser.DisableWmImeSetContext = true;
-                    browser.DomContextMenu += f_browser_DomContextMenu;
-                    browser.DocumentCompleted += f_browser_DocumentCompleted;
-                    tab.Controls.Add(browser);
-                    browser.EnableDefaultFullscreen();
-
-                    //browser.Retargeted += (s, e) =>
-                    //{
-                    //    var ch = e.Request as Gecko.Net.Channel;
-                    //    Console.WriteLine("Retargeted: url: " + e.Uri + ", contentType: " + ch.ContentType + ", top: " + e.DomWindowTopLevel);
-                    //};
-
-                    //open.Click += (s, a) =>
-                    //{
-                    //    nsIFilePicker filePicker = Xpcom.CreateInstance<nsIFilePicker>("@mozilla.org/filepicker;1");
-                    //    filePicker.Init(browser.Window.DomWindow, new nsAString("hello"), nsIFilePickerConsts.modeOpen);
-                    //    //filePicker.AppendFilter(new nsAString("png"), new nsAString("*.png"));
-                    //    //filePicker.AppendFilter(new nsAString("html"), new nsAString("*.html"));
-                    //    if (nsIFilePickerConsts.returnOK == filePicker.Show())
-                    //    {
-                    //        using (nsACString str = new nsACString())
-                    //        {
-                    //            filePicker.GetFileAttribute().GetNativePathAttribute(str);
-                    //            browser.Navigate(str.ToString());
-                    //        }
-                    //    }
-                    //};
-
-                    //// Popup window management.
-                    //browser.CreateWindow += (s, e) =>
-                    //{
-                    //    // A naive popup blocker, demonstrating popup cancelling.
-                    //    Console.WriteLine("A popup is trying to show: " + e.Uri);
-                    //    if (e.Uri.StartsWith("http://annoying-site.com"))
-                    //    {
-                    //        e.Cancel = true;
-                    //        Console.WriteLine("A popup is blocked: " + e.Uri);
-                    //        return;
-                    //    }
-
-                    //    // For <a target="_blank"> and window.open() without specs(3rd param),
-                    //    // e.Flags == GeckoWindowFlags.All, and we load it in a new tab;
-                    //    // otherwise, load it in a popup window, which is maximized by default.
-                    //    // This simulates firefox's behavior.
-                    //    if (e.Flags == GeckoWindowFlags.All)
-                    //        e.WebBrowser = AddTab();
-                    //    else
-                    //    {
-                    //        var wa = System.Windows.Forms.Screen.GetWorkingArea(this);
-                    //        e.InitialWidth = wa.Width;
-                    //        e.InitialHeight = wa.Height;
-                    //    }
-                    //};
-
+                    
                     #endregion
                     #region [ TOOLBAR ]
                     toolbar = new Panel()
@@ -1116,63 +1058,7 @@ namespace appel
                     };
                     ui_tab_Center.AddTab(tab, true);
                     tab.Tag = doc;
-
-                    browser = new GeckoWebBrowser();
-                    browser.Dock = DockStyle.Fill;
-                    //browser.DisableWmImeSetContext = true;
-                    browser.DomContextMenu += f_browser_DomContextMenu;
-                    browser.DocumentCompleted += f_browser_DocumentCompleted;
-                    tab.Controls.Add(browser);
-                    browser.EnableDefaultFullscreen();
-
-                    //browser.Retargeted += (s, e) =>
-                    //{
-                    //    var ch = e.Request as Gecko.Net.Channel;
-                    //    Console.WriteLine("Retargeted: url: " + e.Uri + ", contentType: " + ch.ContentType + ", top: " + e.DomWindowTopLevel);
-                    //};
-
-                    //open.Click += (s, a) =>
-                    //{
-                    //    nsIFilePicker filePicker = Xpcom.CreateInstance<nsIFilePicker>("@mozilla.org/filepicker;1");
-                    //    filePicker.Init(browser.Window.DomWindow, new nsAString("hello"), nsIFilePickerConsts.modeOpen);
-                    //    //filePicker.AppendFilter(new nsAString("png"), new nsAString("*.png"));
-                    //    //filePicker.AppendFilter(new nsAString("html"), new nsAString("*.html"));
-                    //    if (nsIFilePickerConsts.returnOK == filePicker.Show())
-                    //    {
-                    //        using (nsACString str = new nsACString())
-                    //        {
-                    //            filePicker.GetFileAttribute().GetNativePathAttribute(str);
-                    //            browser.Navigate(str.ToString());
-                    //        }
-                    //    }
-                    //};
-
-                    //// Popup window management.
-                    //browser.CreateWindow += (s, e) =>
-                    //{
-                    //    // A naive popup blocker, demonstrating popup cancelling.
-                    //    Console.WriteLine("A popup is trying to show: " + e.Uri);
-                    //    if (e.Uri.StartsWith("http://annoying-site.com"))
-                    //    {
-                    //        e.Cancel = true;
-                    //        Console.WriteLine("A popup is blocked: " + e.Uri);
-                    //        return;
-                    //    }
-
-                    //    // For <a target="_blank"> and window.open() without specs(3rd param),
-                    //    // e.Flags == GeckoWindowFlags.All, and we load it in a new tab;
-                    //    // otherwise, load it in a popup window, which is maximized by default.
-                    //    // This simulates firefox's behavior.
-                    //    if (e.Flags == GeckoWindowFlags.All)
-                    //        e.WebBrowser = AddTab();
-                    //    else
-                    //    {
-                    //        var wa = System.Windows.Forms.Screen.GetWorkingArea(this);
-                    //        e.InitialWidth = wa.Width;
-                    //        e.InitialHeight = wa.Height;
-                    //    }
-                    //};
-
+                    
                     #endregion
                     #region [ TOOLBAR ]
                     toolbar = new Panel()
@@ -1398,16 +1284,7 @@ namespace appel
             {
                 document_Opening = doc;
                 if (box_text != null) box_text.Visible = true;
-
-                if (browser != null)
-                {
-                    switch (doc.type) {
-                        case oNodeType.LINK:
-                            browser.Navigate(doc.path);
-                            break;
-                    }
-                }
-
+                
                 if (pdfViewer != null)
                     setTimeout.Delay(300, () => { pdfViewer.crossThreadPerformSafely(() => { pdfViewer.Visible = true; }); });
 
@@ -1425,45 +1302,7 @@ namespace appel
             ui_tab_Left.Enabled = true;
             Cursor = Cursors.Default;
         }
-
-        private void f_browser_DomContextMenu(object sender, DomMouseEventArgs e)
-        {
-            //contextMenu.Show(browser, PointToClient(new Point(e.ScreenX, e.ScreenY)));
-            e.Handled = true;
-        }
-
-        private void f_browser_DocumentCompleted(object sender, EventArgs e)
-        {
-            //if (browser.Url.ToString() == m_url)
-            //{
-            //    foreach (var a in browser.Document.GetElementsByTagName("A").Cast<GeckoAnchorElement>())
-            //    {
-            //        a.Style.CssText = "display:none";
-            //        break;
-            //    }
-
-            //    foreach (var img in browser.Document.GetElementsByTagName("IMG").Cast<GeckoImageElement>())
-            //    {
-            //        if (img.Src == "http://web20office.com/web/images/web20office.png")
-            //        {
-            //            img.Style.CssText = "display:none";
-            //            bg.SendToBack();
-            //            break;
-            //        }
-            //    }
-            //}
-            //else {
-            //    foreach (var a in browser.Document.GetElementsByTagName("DIV"))
-            //    {
-            //        if (a.Id == "mainTop2") {
-            //            a.SetAttribute("style", "display:none;");
-            //            break;
-            //        }
-            //    }
-
-            //}
-        }
-
+        
         #endregion
 
         #region [ AREA RIGHT ]
