@@ -1311,14 +1311,14 @@ namespace appel
                         continue;
 #endif
 
-                    // Decipher signature if needed
-                    if (sig.IsNotBlank())
-                    {
-                        new Exception("Decipher signature if needed");
-                        //////var playerSource = GetVideoPlayerSourceAsync(playerContext.SourceUrl);
-                        //////sig = playerSource.Decipher(sig);
-                        //////url = SetQueryParameter(url, "signature", sig);
-                    }
+                    //// Decipher signature if needed
+                    //if (sig.IsNotBlank())
+                    //{
+                    //    new Exception("Decipher signature if needed");
+                    //    //////var playerSource = GetVideoPlayerSourceAsync(playerContext.SourceUrl);
+                    //    //////sig = playerSource.Decipher(sig);
+                    //    //////url = SetQueryParameter(url, "signature", sig);
+                    //}
 
                     // Probe stream and get content length
                     long contentLength = 0;
